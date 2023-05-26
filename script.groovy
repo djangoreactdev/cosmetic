@@ -19,7 +19,7 @@ def deployApp() {
     sh 'docker rm cosmetic || true'
     sh 'docker rmi cosmetic || true'
     sh 'docker pull djangoreactdev/cosmetic:1.0'
-    sh 'docker run -d --name cosmetic -p 80:3000 djangoreactdev/cosmetic:1.0'
+    sh 'docker run -d --name cosmetic -p 82:3000 djangoreactdev/cosmetic:1.0'
 } 
 
 return this
