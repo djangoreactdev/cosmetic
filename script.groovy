@@ -12,8 +12,7 @@ def buildImage() {
                     file(credentialsId: 'env_file_django', variable: 'ENV_django'),
                     file(credentialsId: 'env_file_postgres', variable: 'ENV_postgres')
                 ]) {
-                    sh '
-                        # django env
+                    sh '# django env
                         # Extract the contents of the credentials file to a temporary directory
                         tmp_dir=$(mktemp -d)
                         tar -xf ${ENV_django} -C ${tmp_dir}
@@ -23,8 +22,7 @@ def buildImage() {
 
                         # postgres env
                         tar -xf ${ENV_postgres} -C ${tmp_dir}
-                        cp -R ${tmp_dir}/folder_with_files /.envs/.production/.postgres
-                  '
+                        cp -R ${tmp_dir}/folder_with_files /.envs/.production/.postgres'
                 }
     sh 'docker compose -f production.yml build django front dashboard'
     withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
