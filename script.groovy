@@ -19,8 +19,11 @@ def buildImage() {
     withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
 
         sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
+        sh 'docker tag cosmetic-front:1.0 djangoreactdev/cosmetic-front:1.0'
         sh 'docker push djangoreactdev/cosmetic-front:1.0'
+        sh 'docker tag cosmetic-api:1.0 djangoreactdev/cosmetic-api:1.0'
         sh 'docker push djangoreactdev/cosmetic-api:1.0'
+        sh 'docker tag cosmetic-dashboard:1.0 djangoreactdev/cosmetic-dashboard:1.0'
         sh 'docker push djangoreactdev/cosmetic-dashboard:1.0'
     }
 } 
