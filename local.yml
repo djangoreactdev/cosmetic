@@ -50,7 +50,7 @@ services:
       - '9000:9000'
     command: /start-docs
 
-  next:
+  cosmetic-front:
     build:
       context: ./front-next
       target: runner
@@ -65,7 +65,7 @@ services:
       NODE_ENV: development
     # user: root
 
-  dashboard:
+  cosmetic-dashboard:
     build:
       context: ./dashboard-next
       target: runner

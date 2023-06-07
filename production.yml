@@ -56,7 +56,7 @@ services:
     volumes:
       - production_postgres_data_backups:/backups:z
 
-  front:
+  cosmetic-front:
     build:
       context: ./front-next
       target: runner
@@ -73,7 +73,7 @@ services:
       NODE_ENV: production
     # user: root
 
-  dashboard:
+  cosmetic-dashboard:
     build:
       context: ./dashboard-next
       target: runner
