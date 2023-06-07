@@ -6,11 +6,11 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# cosmetic/
-APPS_DIR = BASE_DIR / "cosmetic"
+# cosmeticpro/
+APPS_DIR = BASE_DIR / "cosmeticpro"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -26,6 +26,12 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
+# https://docs.djangoproject.com/en/dev/ref/settings/#languages
+# from django.utils.translation import gettext_lazy as _
+# LANGUAGES = [
+#     ('en', _('English')),
+#     ('pt-br', _('Português')),
+# ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
@@ -72,7 +78,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "cosmetic.users",
+    "cosmeticpro.users",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -81,7 +87,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "cosmetic.contrib.sites.migrations"}
+MIGRATION_MODULES = {"sites": "cosmeticpro.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
@@ -172,7 +178,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "cosmetic.users.context_processors.allauth_settings",
+                "cosmeticpro.users.context_processors.allauth_settings",
             ],
         },
     }
@@ -252,13 +258,13 @@ ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "cosmetic.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "cosmeticpro.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-ACCOUNT_FORMS = {"signup": "cosmetic.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {"signup": "cosmeticpro.users.forms.UserSignupForm"}
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "cosmetic.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "cosmeticpro.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-SOCIALACCOUNT_FORMS = {"signup": "cosmetic.users.forms.UserSocialSignupForm"}
+SOCIALACCOUNT_FORMS = {"signup": "cosmeticpro.users.forms.UserSocialSignupForm"}
 
 
 # Your stuff...

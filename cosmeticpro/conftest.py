@@ -1,7 +1,7 @@
 import pytest
 
-from cosmetic.users.models import User
-from cosmetic.users.tests.factories import UserFactory
+from cosmeticpro.users.models import User
+from cosmeticpro.users.tests.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)

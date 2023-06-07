@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`api.cosmeticpro.pp.ua`) || Host(`www.api.cosmeticpro.pp.ua`)'
+      rule: 'Host(`api.cosmeticpro.pp.ua`)'
       entryPoints:
         - web-secure
       middlewares:

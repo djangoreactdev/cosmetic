@@ -1,16 +1,16 @@
 version: '3'
 
 volumes:
-  cosmetic_local_postgres_data: {}
-  cosmetic_local_postgres_data_backups: {}
+  cosmeticpro_local_postgres_data: {}
+  cosmeticpro_local_postgres_data_backups: {}
 
 services:
   django:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: cosmetic_local_django
-    container_name: cosmetic_local_django
+    image: cosmetic-api:1.0.2
+    container_name: cosmetic-api
     depends_on:
       - postgres
     volumes:
@@ -26,17 +26,17 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: cosmetic_production_postgres
-    container_name: cosmetic_local_postgres
+    image: cosmeticpro_production_postgres
+    container_name: cosmeticpro_local_postgres
     volumes:
-      - cosmetic_local_postgres_data:/var/lib/postgresql/data
-      - cosmetic_local_postgres_data_backups:/backups
+      - cosmeticpro_local_postgres_data:/var/lib/postgresql/data
+      - cosmeticpro_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
 
   docs:
-    image: cosmetic_local_docs
-    container_name: cosmetic_local_docs
+    image: cosmeticpro_local_docs
+    container_name: cosmeticpro_local_docs
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile
@@ -45,7 +45,7 @@ services:
     volumes:
       - ./docs:/docs:z
       - ./config:/app/config:z
-      - ./cosmetic:/app/cosmetic:z
+      - ./cosmeticpro:/app/cosmeticpro:z
     ports:
       - '9000:9000'
     command: /start-docs

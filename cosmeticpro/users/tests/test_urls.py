@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 
-from cosmetic.users.models import User
+from cosmeticpro.users.models import User
 
 
 def test_detail(user: User):

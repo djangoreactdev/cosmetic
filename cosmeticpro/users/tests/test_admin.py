@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from cosmetic.users.models import User
+from cosmeticpro.users.models import User
 
 
 class TestUserAdmin:

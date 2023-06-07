@@ -8,10 +8,10 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.test import RequestFactory
 from django.urls import reverse
 
-from cosmetic.users.forms import UserAdminChangeForm
-from cosmetic.users.models import User
-from cosmetic.users.tests.factories import UserFactory
-from cosmetic.users.views import (
+from cosmeticpro.users.forms import UserAdminChangeForm
+from cosmeticpro.users.models import User
+from cosmeticpro.users.tests.factories import UserFactory
+from cosmeticpro.users.views import (
     UserRedirectView,
     UserUpdateView,
     user_detail_view,

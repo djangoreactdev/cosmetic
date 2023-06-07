@@ -3,11 +3,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UsersConfig(AppConfig):
-    name = "cosmetic.users"
+    name = "cosmeticpro.users"
     verbose_name = _("Users")
 
     def ready(self):
         try:
-            import cosmetic.users.signals  # noqa: F401
+            import cosmeticpro.users.signals  # noqa: F401
         except ImportError:
             pass

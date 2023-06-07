@@ -10,7 +10,8 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
-    image: cosmetic-api:1.0.1
+
+    image: cosmetic-api:1.0.2
     container_name: cosmetic-api
     depends_on:
       - postgres
@@ -24,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: cosmetic_production_postgres
+    image: cosmeticpro_production_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -35,7 +36,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/traefik/Dockerfile
-    image: cosmetic_production_traefik
+    image: cosmeticpro_production_traefik
     depends_on:
       - django
     volumes:
@@ -55,6 +56,7 @@ services:
       - ./.envs/.production/.django
     volumes:
       - production_postgres_data_backups:/backups:z
+
 
   cosmetic-front:
     build:
