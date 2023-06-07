@@ -15,7 +15,7 @@ def buildImage() {
             writeFile file: '.envs/.production/.django', text: readFile(ENV_cosmetic_django)
             writeFile file: '.envs/.production/.postgres', text: readFile(ENV_cosmetic_postgres)
         }
-    sh 'docker compose -f production.yml build django front dashboard'
+    sh 'docker compose -f production.yml build django cosmetic-front cosmetic-dashboard'
     withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
 
         sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
