@@ -6,7 +6,7 @@ def buildJar() {
 def buildImage() {
     echo "building the docker image..."
     // sh 'docker build -t djangoreactdev/cosmetic:1.0 ./front-next'
-    // sh 'docker build -t djangoreactdev/cosmetic-api:1.0 ./compose/local/django'
+    // sh 'docker build -t djangoreactdev/cosmetic-api:1.0.1 ./compose/local/django'
 
     withCredentials([
             file(credentialsId: 'env_file_cosmetic_django', variable: 'ENV_cosmetic_django'),
@@ -21,8 +21,8 @@ def buildImage() {
         sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
         sh 'docker tag cosmetic-front:1.0 djangoreactdev/cosmetic-front:1.0'
         sh 'docker push djangoreactdev/cosmetic-front:1.0'
-        sh 'docker tag cosmetic-api:1.0 djangoreactdev/cosmetic-api:1.0'
-        sh 'docker push djangoreactdev/cosmetic-api:1.0'
+        sh 'docker tag cosmetic-api:1.0.1 djangoreactdev/cosmetic-api:1.0.1'
+        sh 'docker push djangoreactdev/cosmetic-api:1.0.1'
         sh 'docker tag cosmetic-dashboard:1.0 djangoreactdev/cosmetic-dashboard:1.0'
         sh 'docker push djangoreactdev/cosmetic-dashboard:1.0'
     }
