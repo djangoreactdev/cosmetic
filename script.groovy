@@ -9,7 +9,7 @@ def buildImage() {
     // sh 'docker build -t djangoreactdev/cosmetic-api:1.0 ./compose/local/django'
 
     withCredentials([
-                    file(credentialsId: 'env_file_django', variable: 'ENV_django')
+                    file(credentialsId: 'env_file_django', variable: 'ENV_django'),
                     file(credentialsId: 'env_file_postgres', variable: 'ENV_postgres')
                 ]) {
                     sh '
