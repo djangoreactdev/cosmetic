@@ -1,0 +1,81 @@
+version: '3'
+
+volumes:
+  cosmetic_local_postgres_data: {}
+  cosmetic_local_postgres_data_backups: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: cosmetic_local_django
+    container_name: cosmetic_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: cosmetic_production_postgres
+    container_name: cosmetic_local_postgres
+    volumes:
+      - cosmetic_local_postgres_data:/var/lib/postgresql/data
+      - cosmetic_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+
+  docs:
+    image: cosmetic_local_docs
+    container_name: cosmetic_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./cosmetic:/app/cosmetic:z
+    ports:
+      - '9000:9000'
+    command: /start-docs
+
+  next:
+    build:
+      context: ./front-next
+      target: runner
+    volumes:
+      - ./front-next:/app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: development
+    # user: root
+
+  dashboard:
+    build:
+      context: ./dashboard-next
+      target: runner
+    image: cosmetic-dashboard:1.0
+    container_name: cosmetic-dashboard
+    volumes:
+      - ./dashboard-next:/app
+    command: npm start
+    ports:
+      - "9000:9000"
+    environment:
+      NODE_ENV: development
+    # user: root
