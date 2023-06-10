@@ -4,6 +4,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+from django.views.decorators.csrf import csrf_exempt
+
+from graphene_file_upload.django import FileUploadGraphQLView
+from graphene_django.views import GraphQLView
+
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -16,6 +21,11 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += [
+    # path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path("graphql/", FileUploadGraphQLView.as_view(graphiql=True)),
+    path("charts/", include("cosmeticpro.ecommerce.charts.urls")),
+]
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

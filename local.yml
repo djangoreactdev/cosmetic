@@ -5,14 +5,16 @@ volumes:
   cosmeticpro_local_postgres_data_backups: {}
 
 services:
-  django:
+  django: &django
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: cosmetic-api:1.0.2
-    container_name: cosmetic-api
+    image: cosmeticpro_local_django
+    container_name: cosmeticpro_local_django
     depends_on:
       - postgres
+      - redis
+      - mailhog
     volumes:
       - .:/app:z
     env_file:
@@ -50,32 +52,42 @@ services:
       - '9000:9000'
     command: /start-docs
 
-  cosmetic-front:
-    build:
-      context: ./front-next
-      target: runner
-    volumes:
-      - ./front-next:/app
-    command: npm run dev
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    container_name: cosmeticpro_local_mailhog
     ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    environment:
-      NODE_ENV: development
-    # user: root
+      - "8025:8025"
 
-  cosmetic-dashboard:
-    build:
-      context: ./dashboard-next
-      target: runner
-    image: cosmetic-dashboard:1.0
-    container_name: cosmetic-dashboard
-    volumes:
-      - ./dashboard-next:/app
-    command: npm start
+  redis:
+    image: redis:6
+    container_name: cosmeticpro_local_redis
+
+  celeryworker:
+    <<: *django
+    image: cosmeticpro_local_celeryworker
+    container_name: cosmeticpro_local_celeryworker
+    depends_on:
+      - redis
+      - postgres
+      - mailhog
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: cosmeticpro_local_celerybeat
+    container_name: cosmeticpro_local_celerybeat
+    depends_on:
+      - redis
+      - postgres
+      - mailhog
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: cosmeticpro_local_flower
+    container_name: cosmeticpro_local_flower
     ports:
-      - "9000:9000"
-    environment:
-      NODE_ENV: development
-    # user: root
+      - '5555:5555'
+    command: /start-flower
