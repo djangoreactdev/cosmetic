@@ -28,5 +28,9 @@ npm-debug.log
 yarn-error.log
 venv/
 
+<<<<<<< HEAD
 testing-lab
 
+=======
+testing-lab
+>>>>>>> 360df0d... add backend for ecommerce

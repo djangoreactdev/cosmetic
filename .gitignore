@@ -280,6 +280,7 @@ cosmeticpro/media/
 .envs/*
 # !.envs/.local/
 
+<<<<<<< HEAD
 testing-lab/
 
 # Logs
@@ -360,3 +361,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 multi-e-commerce-template-master/
+=======
+testing-lab/
+>>>>>>> 360df0d... add backend for ecommerce

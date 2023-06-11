@@ -84,7 +84,11 @@ LOCAL_APPS = [
     "graphene_django",
     "django_filters",
     "taggit",
+<<<<<<< HEAD
     "corsheaders",
+=======
+    # "corsheaders",
+>>>>>>> 360df0d... add backend for ecommerce
     # Local app
     "cosmeticpro.ecommerce.product.apps.ProductConfig",
     "cosmeticpro.ecommerce.comment.apps.CommentConfig",
@@ -140,7 +144,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+<<<<<<< HEAD
     "corsheaders.middleware.CorsMiddleware",
+=======
+    # "corsheaders.middleware.CorsMiddleware",
+>>>>>>> 360df0d... add backend for ecommerce
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -347,6 +355,7 @@ AUTHENTICATION_BACKENDS += [
 ]
 
 # Email config
+<<<<<<< HEAD
 EMAIL_BACKEND = env("EMAIL_BACKEND")
 MAILER_EMAIL_BACKEND = env("MAILER_EMAIL_BACKEND")
 EMAIL_HOST = env("EMAIL_HOST")
@@ -355,11 +364,47 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+=======
+# EMAIL_BACKEND = env("EMAIL_BACKEND")
+# MAILER_EMAIL_BACKEND = env("MAILER_EMAIL_BACKEND")
+# EMAIL_HOST = env("EMAIL_HOST")
+# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+# EMAIL_PORT = env("EMAIL_PORT")
+# EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+# DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+>>>>>>> 360df0d... add backend for ecommerce
 
 
 # Cart config
 CART_SESSION_ID = "cart"
 
+<<<<<<< HEAD
+=======
+
+# if DEBUG == True:
+#     CACHES = {
+#         "default": {
+#             "BACKEND": "django_redis.cache.RedisCache",
+#             "LOCATION": "redis://127.0.0.1:6379/1",
+#             "OPTIONS": {
+#                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             },
+#         }
+#     }
+# else:
+#     CACHES = {
+#         "default": {
+#             "BACKEND": "django_redis.cache.RedisCache",
+#             "LOCATION": "redis://redis/1",
+#             "OPTIONS": {
+#                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             },
+#         }
+#     }
+
+>>>>>>> 360df0d... add backend for ecommerce
 APPEND_SLASH = False
 
 CATEGORIES_TIMEOUT = 1000
@@ -367,6 +412,7 @@ PRODUCTS_TIMEOUT = 1000
 ARTICLES_TIMEOUT = 1000
 EXPIRED_TIME = 900
 
+<<<<<<< HEAD
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:3000"])
 # from datetime import timedelta
 
@@ -376,3 +422,8 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localho
 #     "JWT_EXPIRATION_DELTA": timedelta(minutes=5),
 #     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
 # }
+=======
+# CORS_ALLOWED_ORIGINS = [
+#      "http://localhost:3000","http://192.168.59.128:3000",
+# ]
+>>>>>>> 360df0d... add backend for ecommerce
