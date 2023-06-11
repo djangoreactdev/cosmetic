@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.conf import settings
 
-from extensions.web_scraping import get_price_gold, get_price_doral
+from ..extensions.web_scraping import get_price_gold, get_price_doral
 from celery import shared_task
 from decimal import Decimal
 
