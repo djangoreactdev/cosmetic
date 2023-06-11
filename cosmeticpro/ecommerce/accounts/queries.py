@@ -11,4 +11,3 @@ class AccountsQuery(graphene.ObjectType):
     def resolve_account(parent, info):
         user = info.context.user
         return User.objects.get(id=user.id)
-        

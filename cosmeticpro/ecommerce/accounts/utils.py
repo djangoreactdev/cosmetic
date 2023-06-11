@@ -14,9 +14,9 @@ def _generate_code():
 
 
 def send_multi_format_email(template_prefix, template_context, target_email):
-    subject_file = "accounts/%s_subject.txt" % template_prefix
-    txt_file = "accounts/%s.txt" % template_prefix
-    html_file = "accounts/%s.html" % template_prefix
+    subject_file = "graphql/accounts/%s_subject.txt" % template_prefix
+    txt_file = "graphql/accounts/%s.txt" % template_prefix
+    html_file = "graphql/accounts/%s.html" % template_prefix
 
     subject = render_to_string(subject_file).strip()
     from_email = settings.EMAIL_HOST_USER

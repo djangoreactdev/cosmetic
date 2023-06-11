@@ -279,3 +279,5 @@ cosmeticpro/media/
 .env
 .envs/*
 # !.envs/.local/
+
+testing-lab/

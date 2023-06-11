@@ -1,4 +1,4 @@
-# cosmeticpro
+# cosmetic
 
 Cosmetology site
 
@@ -27,7 +27,7 @@ For convenience, you can keep your normal user logged in on Chrome and your supe
 
 Running type checks with mypy:
 
-    $ mypy cosmeticpro
+    $ mypy cosmetic
 
 ### Test coverage
 
@@ -52,7 +52,7 @@ This app comes with Celery.
 To run a celery worker:
 
 ```bash
-cd cosmeticpro
+cd cosmetic
 celery -A config.celery_app worker -l info
 ```
 
@@ -61,14 +61,14 @@ Please note: For Celery's import magic to work, it is important _where_ the cele
 To run [periodic tasks](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html), you'll need to start the celery beat scheduler service. You can start it as a standalone process:
 
 ```bash
-cd cosmeticpro
+cd cosmetic
 celery -A config.celery_app beat
 ```
 
 or you can embed the beat service inside a worker with the `-B` option (not recommended for production use):
 
 ```bash
-cd cosmeticpro
+cd cosmetic
 celery -A config.celery_app worker -B -l info
 ```
 
@@ -86,5 +86,23 @@ With MailHog running, to view messages that are sent by your application, open y
 The following details how to deploy this application.
 
 ### Docker
+
+#### Building the images locally
+
+```bash
+docker compose -f local.yml build
+docker compose -f local.yml up
+docker compose -f local.yml down
+
+# create superuser
+docker-compose exec django python manage.py createsuperuser
+```
+```
+
+```bash
+docker compose -f production.yml build
+docker-compose exec web python manage.py createsuperuser
+docker compose -f production.yml up
+```
 
 See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
