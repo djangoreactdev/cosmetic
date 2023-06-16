@@ -281,6 +281,9 @@ cosmeticpro/media/
 # !.envs/.local/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f019c54... add nginx to production
 testing-lab/
 
 # Logs
@@ -359,8 +362,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+<<<<<<< HEAD
 next-env.d.ts
 multi-e-commerce-template-master/
 =======
 testing-lab/
 >>>>>>> 360df0d... add backend for ecommerce
+=======
+next-env.d.ts
+>>>>>>> f019c54... add nginx to production

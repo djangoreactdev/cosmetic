@@ -29,8 +29,13 @@ yarn-error.log
 venv/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 testing-lab
 
 =======
 testing-lab
 >>>>>>> 360df0d... add backend for ecommerce
+=======
+testing-lab
+
+>>>>>>> f019c54... add nginx to production

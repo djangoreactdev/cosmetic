@@ -97,6 +97,7 @@ services:
     command: /start-flower
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   # cosmetic-front:
   #   build:
   #       context: ./front-next
@@ -126,3 +127,32 @@ services:
   #   user: root
 =======
 >>>>>>> 360df0d... add backend for ecommerce
+=======
+  cosmetic-front:
+    build:
+        context: ./front-next
+        dockerfile: ./docker/local/Dockerfile
+    container_name: cosmetic-front
+    # restart: unless-stopped
+    volumes:
+        - ./front-next:/app
+        - cosmetic_front:/app/node_modules
+    ports:
+        - "3000:3000"
+    command: pnpm dev
+    user: root
+
+  cosmetic-dashboard:
+    build:
+        context: ./dashboard-next
+        dockerfile: ./docker/local/Dockerfile
+    container_name: cosmetic-dashboard
+    # restart: unless-stopped
+    volumes:
+        - ./dashboard-next:/app
+        - cosmetic_dashboard:/app/node_modules
+    ports:
+        - "4000:4000"
+    command: pnpm dev
+    user: root
+>>>>>>> f019c54... add nginx to production
