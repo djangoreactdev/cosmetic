@@ -3,6 +3,9 @@ version: '3'
 volumes:
   cosmeticpro_local_postgres_data: {}
   cosmeticpro_local_postgres_data_backups: {}
+  cosmetic_django_media: {}
+  cosmetic_front: {}
+  cosmetic_dashboard: {}
 
 services:
   django: &django
@@ -17,6 +20,7 @@ services:
       - mailhog
     volumes:
       - .:/app:z
+      - cosmetic_django_media:/app/cosmeticpro/media:z
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
@@ -92,3 +96,30 @@ services:
       - '5555:5555'
     command: /start-flower
 
+  cosmetic-front:
+    build:
+        context: ./front-next
+        dockerfile: ./docker/local/Dockerfile
+    container_name: cosmetic-front
+    # restart: unless-stopped
+    volumes:
+        - ./front-next:/app
+        - cosmetic_front:/app/node_modules
+    ports:
+        - "3000:3000"
+    command: pnpm dev
+    user: root
+
+  cosmetic-dashboard:
+    build:
+        context: ./dashboard-next
+        dockerfile: ./docker/local/Dockerfile
+    container_name: cosmetic-dashboard
+    # restart: unless-stopped
+    volumes:
+        - ./dashboard-next:/app
+        - cosmetic_dashboard:/app/node_modules
+    ports:
+        - "4000:4000"
+    command: pnpm dev
+    user: root

@@ -4,9 +4,11 @@ volumes:
   production_postgres_data: {}
   production_postgres_data_backups: {}
   production_traefik: {}
-
+  cosmetic_django_media: {}
+  cosmetic_front: {}
+  cosmetic_dashboard: {}
 services:
-  django: &django
+  cosmetic-api: &django
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
@@ -18,6 +20,8 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
+    volumes:
+      - cosmetic_django_media:/app/codehelp/media
     command: /start
 
   postgres:
@@ -31,19 +35,19 @@ services:
     env_file:
       - ./.envs/.production/.postgres
 
-  traefik:
-    build:
-      context: .
-      dockerfile: ./compose/production/traefik/Dockerfile
-    image: cosmeticpro_production_traefik
-    depends_on:
-      - django
-    volumes:
-      - production_traefik:/etc/traefik/acme
-    ports:
-      - '0.0.0.0:80:80'
-      - '0.0.0.0:443:443'
-      - '0.0.0.0:5555:5555'
+  # traefik:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/production/traefik/Dockerfile
+  #   image: cosmeticpro_production_traefik
+  #   depends_on:
+  #     - django
+  #   volumes:
+  #     - production_traefik:/etc/traefik/acme
+  #   ports:
+  #     - '0.0.0.0:80:80'
+  #     - '0.0.0.0:443:443'
+  #     - '0.0.0.0:5555:5555'
 
   redis:
     image: redis:6
@@ -63,11 +67,52 @@ services:
     image: cosmeticpro_production_flower
     command: /start-flower
 
-  awscli:
+  # awscli:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/production/aws/Dockerfile
+  #   env_file:
+  #     - ./.envs/.production/.django
+  #   volumes:
+  #     - production_postgres_data_backups:/backups:z
+
+  cosmetic-front:
     build:
-      context: .
-      dockerfile: ./compose/production/aws/Dockerfile
-    env_file:
-      - ./.envs/.production/.django
+        context: ./front-next
+        dockerfile: ./docker/production/Dockerfile
+    container_name: cosmetic-front
+    # restart: unless-stopped
+    # volumes:
+    #     - ./front-next:/app
+    #     - cosmetic_front:/app/node_modules
+    # ports:
+    #     - "3000:3000"
+    command: pnpm start
+    user: root
+
+  cosmetic-dashboard:
+    build:
+        context: ./dashboard-next
+        dockerfile: ./docker/production/Dockerfile
+    container_name: cosmetic-dashboard
+    # restart: unless-stopped
+    # volumes:
+    #     - ./dashboard-next:/app
+    #     - cosmetic_dashboard:/app/node_modules
+    # ports:
+    #     - "4000:4000"
+    command: pnpm start
+    user: root
+
+  nginx:
+    build:
+      context: ./compose/production/nginx
+      dockerfile: Dockerfile
+    image: cosmetic_local_nginx
+    depends_on:
+      - cosmetic-api
     volumes:
-      - production_postgres_data_backups:/backups:z
+      - cosmetic_django_media:/usr/share/nginx/media:ro
+    ports:
+        - "3000:3000"
+        - "4000:4000"

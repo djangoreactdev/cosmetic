@@ -23,7 +23,7 @@ urlpatterns = [
 
 urlpatterns += [
     # path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    path("graphql/", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
+    path("api/graphql", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
     path("charts/", include("cosmeticpro.ecommerce.charts.urls")),
 ]
 
