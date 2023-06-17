@@ -1,6 +1,7 @@
 import NextAuth, { AuthOptions, Awaitable, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+<<<<<<< HEAD
 import { Client } from "@/graphql/apollo";
 import { checkIsEmail } from "@/utils";
 import {
@@ -9,6 +10,18 @@ import {
   CreateAccountDocument,
   AccountInput,
 } from "@/graphql/generated";
+=======
+import { Client } from "src/apollo";
+import { checkIsEmail } from "../../../utils";
+import {
+  LoginDocument,
+  MutationLoginArgs,
+  RefreshTokenDocument,
+  RevokeTokenDocument,
+  MutationRegisterArgs,
+  RegisterDocument,
+} from "src/graphql/generated";
+>>>>>>> e4e73bc... add graphql to front
 import jwtDecode from "jwt-decode";
 
 export const authOptions: AuthOptions = {
@@ -33,9 +46,13 @@ export const authOptions: AuthOptions = {
         const id: string = credentials?.id || "";
         const isEmail = checkIsEmail(id);
 
+<<<<<<< HEAD
         let param:
           | { username: string; password: string }
           | { email: string; password: string };
+=======
+        let param: MutationLoginArgs;
+>>>>>>> e4e73bc... add graphql to front
 
         if (isEmail) {
           param = {
@@ -50,6 +67,7 @@ export const authOptions: AuthOptions = {
         }
 
         const res = await Client.mutate({
+<<<<<<< HEAD
           mutation: TokenAuthDocument,
           variables: param,
         });
@@ -66,14 +84,39 @@ export const authOptions: AuthOptions = {
             token: data.tokenAuth.token,
             tokenExpiresIn: decoded.exp,
             email: decoded.email,
+=======
+          mutation: LoginDocument,
+          variables: param,
+        });
+
+        const user = res.data?.login;
+
+        // If no error and we have user data, return it
+        if (user?.success) {
+          const decoded: { exp: number; username: string } = jwtDecode(
+            user.token!
+          );
+
+          return {
+            ...user,
+            isNewUser: false,
+            tokenExpiresIn: decoded.exp,
+>>>>>>> e4e73bc... add graphql to front
             username: decoded.username,
           } as Awaitable<User>;
         }
 
+<<<<<<< HEAD
         if (data?.errors) {
           const errorMessage =
             data.errors[Object.keys(data.errors)[0]][0].message;
           throw new Error(`${Object.keys(data.errors)[0]}: ${errorMessage}`);
+=======
+        if (user?.errors) {
+          const errorMessage =
+            user.errors[Object.keys(user.errors)[0]][0].message;
+          throw new Error(`${Object.keys(user.errors)[0]}: ${errorMessage}`);
+>>>>>>> e4e73bc... add graphql to front
         }
 
         // Return null if user data could not be retrieved
@@ -94,6 +137,7 @@ export const authOptions: AuthOptions = {
           type: "email",
           name: "email",
         },
+<<<<<<< HEAD
         lastName: {
           label: "Last Name",
           type: "text",
@@ -144,6 +188,52 @@ export const authOptions: AuthOptions = {
           console.error(data.message);
           const errorMessage = data.error(data.message);
           throw new Error(`${Object.keys(data.message)}: ${errorMessage}`);
+=======
+        password1: {
+          label: "Password",
+          type: "password",
+          name: "password1",
+        },
+        password2: {
+          label: "Confirm password",
+          type: "password",
+          name: "password2",
+        },
+      },
+      authorize: async (credentials, req) => {
+        const param: MutationRegisterArgs = {
+          username: credentials?.username || "",
+          email: credentials?.email || "",
+          password1: credentials?.password1 || "",
+          password2: credentials?.password2 || "",
+        };
+
+        const res = await Client.mutate({
+          mutation: RegisterDocument,
+          variables: param,
+        });
+
+        const user = res.data?.register;
+
+        // If no error and we have user data, return it
+        if (user?.success) {
+          const decoded: { exp: number; username: string } = jwtDecode(
+            user.token!
+          );
+
+          return {
+            ...user,
+            isNewUser: true,
+            tokenExpiresIn: decoded.exp,
+            username: decoded.username,
+          } as Awaitable<User>;
+        }
+
+        if (user?.errors) {
+          const errorMessage =
+            user.errors[Object.keys(user.errors)[0]][0].message;
+          throw new Error(`${Object.keys(user.errors)[0]}: ${errorMessage}`);
+>>>>>>> e4e73bc... add graphql to front
         }
         // Return null if user data could not be retrieved
         return null;
@@ -155,9 +245,16 @@ export const authOptions: AuthOptions = {
       if (user) {
         return {
           accessToken: user.token || "",
+<<<<<<< HEAD
           username: user.username || "",
           email: user.email || "",
           tokenExpiresIn: user.tokenExpiresIn,
+=======
+          refreshToken: user.refreshToken || "",
+          username: user.username || "",
+          tokenExpiresIn: user.tokenExpiresIn,
+          isNewUser: user.isNewUser,
+>>>>>>> e4e73bc... add graphql to front
         } as Awaitable<JWT>;
       } else if (Date.now() / 1000 < token.tokenExpiresIn) {
         return token;
@@ -170,12 +267,21 @@ export const authOptions: AuthOptions = {
             },
           });
 
+<<<<<<< HEAD
           // Client.mutate({
           //   mutation: RevokeTokenDocument,
           //   variables: {
           //     refreshToken: token.refreshToken,
           //   },
           // });
+=======
+          Client.mutate({
+            mutation: RevokeTokenDocument,
+            variables: {
+              refreshToken: token.refreshToken,
+            },
+          });
+>>>>>>> e4e73bc... add graphql to front
 
           const tokens = res.data?.refreshToken;
 
@@ -202,7 +308,11 @@ export const authOptions: AuthOptions = {
     session: async ({ session, token }) => {
       session.token = token.accessToken;
       session.username = token.username;
+<<<<<<< HEAD
       session.email = token.email;
+=======
+      session.isNewUser = token.isNewUser;
+>>>>>>> e4e73bc... add graphql to front
       session.expires = `${token.tokenExpiresIn}`;
       return session;
     },

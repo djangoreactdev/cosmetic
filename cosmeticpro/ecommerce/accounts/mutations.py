@@ -90,7 +90,7 @@ class VerifyEmail(graphene.Mutation):
         try:
             user = User.objects.get(email=email)
             token_from_redis = get_from_redis(user.id, "change_email")
-
+        
             if not token_from_redis:
                 return VerifyEmail(response={"status": "error", "message": "Wrong/Expired Token!"})
 
@@ -203,6 +203,10 @@ class CreateAccount(graphene.Mutation):
                     user = user_exists
 
             except User.DoesNotExist:
+<<<<<<< HEAD
+=======
+            
+>>>>>>> e4e73bc... add graphql to front
                 user = User.objects.create_user(
                     username=input.username,
                     email=input.email,

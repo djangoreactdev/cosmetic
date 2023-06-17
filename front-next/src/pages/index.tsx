@@ -12,6 +12,7 @@ import BlogBaner from "@/components/layout/BlogBaner";
 import FullBanner from "@/components/layout/FullBanner";
 
 export default function Home() {
+<<<<<<< HEAD
   return (
     <>
       <Head>
@@ -28,4 +29,7 @@ export default function Home() {
       <SocialBaner />
     </>
   );
+=======
+  return <main className="flex justify-center items-center">cosmetic 2</main>;
+>>>>>>> e4e73bc... add graphql to front
 }

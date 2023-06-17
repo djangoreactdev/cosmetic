@@ -98,6 +98,9 @@ services:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e4e73bc... add graphql to front
   # cosmetic-front:
   #   build:
   #       context: ./front-next
@@ -111,6 +114,7 @@ services:
   #       - "3000:3000"
   #   command: pnpm dev
   #   user: root
+<<<<<<< HEAD
 
   # cosmetic-dashboard:
   #   build:
@@ -156,3 +160,19 @@ services:
     command: pnpm dev
     user: root
 >>>>>>> f019c54... add nginx to production
+=======
+
+  # cosmetic-dashboard:
+  #   build:
+  #       context: ./dashboard-next
+  #       dockerfile: ./docker/local/Dockerfile
+  #   container_name: cosmetic-dashboard
+  #   # restart: unless-stopped
+  #   volumes:
+  #       - ./dashboard-next:/app
+  #       - cosmetic_dashboard:/app/node_modules
+  #   ports:
+  #       - "4000:4000"
+  #   command: pnpm dev
+  #   user: root
+>>>>>>> e4e73bc... add graphql to front
