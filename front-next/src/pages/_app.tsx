@@ -1,13 +1,13 @@
 import "../styles/globals.css";
+import "../styles/style.css";
 import type { AppPropsWithLayout } from "../types/next";
-import { ThemeProvider } from "styled-components";
+
 import { ApolloProvider } from "@apollo/client";
-import { Client } from "src/apollo";
-// import { theme } from "../styled.config";
-import { Provider } from "react-redux";
-// import { store } from "store";
+import { Client } from "@/apollo";
+
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
+import { Layout } from "@/components/layout";
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <SessionProvider session={pageProps.session}>
       <ApolloProvider client={Client}>
         <Toaster />
-        {getLayout(<Component {...pageProps} />, pageProps)}
+        <Layout>{getLayout(<Component {...pageProps} />, pageProps)}</Layout>
       </ApolloProvider>
     </SessionProvider>
   );

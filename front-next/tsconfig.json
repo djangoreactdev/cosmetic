@@ -16,7 +16,9 @@
     "incremental": true,
     "paths": {
       "react": [ "./node_modules/@types/react" ],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/images/*": ["./src/images/*"],
+      "@/assets/*": ["./src/assets/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
