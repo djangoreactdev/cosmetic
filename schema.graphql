@@ -1,0 +1,426 @@
+type Query {
+  products(search: String, first: Int, skip: Int, goldOrJewelry: Boolean, specialOffer: Boolean, orderSaleNumber: Boolean, orderPrice: Boolean, orderRating: Boolean): [ProductType]
+  productDetail(id: ID, slug: String): ProductType
+  account: UserType
+  categories: [CategoryType]
+  carts: CartType
+  orders: [OrderType]
+  searchAllApp(search: String): [SearchUnion]
+  articles(search: String, first: Int, skip: Int, orderVisit: Boolean, orderRating: Boolean): [ArticleType]
+  articleDetail(id: ID, slug: String): ArticleType
+}
+
+type ProductType {
+  id: ID!
+  title: String!
+  slug: String!
+  color: [ColorType!]!
+  size: [SizeType!]!
+  carat: ProductProductCaratChoices!
+  weight: Decimal!
+  length: Decimal
+  width: Decimal
+  category: CategoryType
+  siteRate: Decimal
+  goldOrJewelry: Boolean!
+  isRateFixed: Boolean!
+  providerGoldRate: Decimal
+  providerDiamondPrice: Decimal
+  body: String!
+  iframe: String
+  status: ProductProductStatusChoices!
+  create: DateTime!
+  update: DateTime!
+  image: String!
+  saleNumber: Int!
+  specialOffer: Boolean!
+  numbersRating: Float!
+  scopeAvrage: Float!
+  rating: Decimal!
+  tags: [String]
+  stoneSet: [StoneType!]!
+  galleries: [ProductGalleryType!]!
+  orderitemSet: [OrderItemType!]!
+  visit: Int
+  price: String
+  comments: [CommentType]
+  similarObjects: [SimilarObjectsUnion]
+}
+
+type ColorType {
+  id: ID!
+  color: String!
+  productSet: [ProductType!]!
+}
+
+type SizeType {
+  id: ID!
+  size: Int!
+  productSet: [ProductType!]!
+}
+
+"""An enumeration."""
+enum ProductProductCaratChoices {
+  """24 ayar"""
+  A_24
+
+  """22 ayar"""
+  A_22
+
+  """18 ayar"""
+  A_18
+
+  """14 ayar"""
+  A_14
+
+  """8 ayar"""
+  A_8
+}
+
+"""The `Decimal` scalar type represents a python Decimal."""
+scalar Decimal
+
+type CategoryType {
+  id: ID!
+  parent: CategoryType
+  name: String!
+  slug: String!
+  children: [CategoryType!]!
+  productSet: [ProductType!]!
+}
+
+"""An enumeration."""
+enum ProductProductStatusChoices {
+  """return"""
+  R
+
+  """publish"""
+  P
+
+  """draft"""
+  D
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+type StoneType {
+  id: ID!
+  product: ProductType
+  name: String!
+  size: Decimal!
+  color: String!
+  clarity: String!
+  cut: String!
+  quantity: Int!
+}
+
+type ProductGalleryType {
+  id: ID!
+  product: ProductType!
+  image: String!
+}
+
+type OrderItemType {
+  id: ID!
+  product: ProductType
+  order: OrderType!
+}
+
+type OrderType {
+  id: ID!
+  user: CartType
+  price: Decimal!
+  paid: Boolean!
+  create: DateTime!
+  address: String!
+  authority: String
+  items: [OrderItemType!]!
+}
+
+type CartType {
+  id: ID!
+  lastLogin: DateTime
+
+  """
+  Designates that this user has all permissions without explicitly assigning them.
+  """
+  isSuperuser: Boolean!
+
+  """Designates whether the user can log into this admin site."""
+  isStaff: Boolean!
+  dateJoined: DateTime!
+  name: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  username: String!
+  isActive: Boolean!
+  userComments: [CommentType!]!
+  profile: ProfileType
+  orders: [OrderType!]!
+  password: String!
+  carts: GenericScalar
+}
+
+type CommentType {
+  id: ID!
+  parent: CommentType
+  user: CartType!
+  objectId: Int
+  rate: CommentCommentRateChoices!
+  body: String!
+  create: DateTime!
+  children: [CommentType!]!
+}
+
+"""An enumeration."""
+enum CommentCommentRateChoices {
+  """excellent"""
+  A_5
+
+  """very good"""
+  A_4
+
+  """good"""
+  A_3
+
+  """bad"""
+  A_2
+
+  """very bad"""
+  A_1
+}
+
+type ProfileType {
+  id: ID!
+  bio: String
+  image: String
+  age: Int
+  user: CartType!
+}
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
+
+union SimilarObjectsUnion = SimilarProductType | ArticleType
+
+type SimilarProductType {
+  id: ID!
+  title: String!
+  slug: String!
+  color: [ColorType!]!
+  size: [SizeType!]!
+  carat: ProductProductCaratChoices!
+  weight: Decimal!
+  length: Decimal
+  width: Decimal
+  category: CategoryType
+  siteRate: Decimal
+  goldOrJewelry: Boolean!
+  isRateFixed: Boolean!
+  providerGoldRate: Decimal
+  providerDiamondPrice: Decimal
+  body: String!
+  iframe: String
+  status: ProductProductStatusChoices!
+  create: DateTime!
+  update: DateTime!
+  image: String!
+  saleNumber: Int!
+  specialOffer: Boolean!
+  numbersRating: Float!
+  scopeAvrage: Float!
+  rating: Decimal!
+  tags: [String]
+  stoneSet: [StoneType!]!
+  galleries: [ProductGalleryType!]!
+  orderitemSet: [OrderItemType!]!
+  price: String
+}
+
+type ArticleType {
+  id: ID!
+  name: String!
+  slug: String!
+  image: String
+  body: String!
+  iframe: String
+  create: DateTime!
+  update: DateTime!
+  status: BlogArticleStatusChoices!
+  numbersRating: Float!
+  scopeAvrage: Float!
+  rating: Decimal!
+  tags: [String]
+  visit: Int
+}
+
+"""An enumeration."""
+enum BlogArticleStatusChoices {
+  """publish"""
+  P
+
+  """draft"""
+  D
+}
+
+type UserType {
+  id: ID!
+  lastLogin: DateTime
+
+  """
+  Designates that this user has all permissions without explicitly assigning them.
+  """
+  isSuperuser: Boolean!
+
+  """Designates whether the user can log into this admin site."""
+  isStaff: Boolean!
+  dateJoined: DateTime!
+  name: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  username: String!
+  isActive: Boolean!
+  userComments: [CommentType!]!
+  profile: ProfileType
+  orders: [OrderType!]!
+}
+
+union SearchUnion = ProductType | ArticleType
+
+type Mutation {
+  """Obtain JSON Web Token mutation"""
+  tokenAuth(email: String!, password: String!): ObtainJSONWebToken
+  verifyToken(token: String): Verify
+  refreshToken(token: String): Refresh
+  createAccount(input: AccountInput!): CreateAccount
+  activateAccount(email: String!, token: String!): ActivateAccount
+  updateAccount(firstName: String, lastName: String, username: String): UpdateAccount
+  changePassword(newPassword: String, oldPassword: String): ChangePassword
+  resetPassword(email: String): ResetPassword
+  verifyPassword(email: String!, newPassword: String!, token: String!): VerifyPassword
+  changeEmail(email: String): ChangeEmail
+  verifyEmail(email: String!, token: String!): VerifyEmail
+  updateProfile(age: Int, bio: String, image: Upload): UpdateProfile
+  createComment(input: CommentInput!, typename: String!): CreateComment
+  updateComment(body: String, commentId: ID, rate: Int): UpdateComment
+  deleteComment(id: ID): DeleteComment
+  addToCart(productId: ID!, quantity: Int!): AddToCart
+  deleteCartitem(rowId: String!): DeleteCartItem
+  cleareCart: CleareCartItem
+  createOrder(address: String): CreateOrder
+}
+
+"""Obtain JSON Web Token mutation"""
+type ObtainJSONWebToken {
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
+  token: String!
+}
+
+type Verify {
+  payload: GenericScalar!
+}
+
+type Refresh {
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
+  token: String!
+}
+
+type CreateAccount {
+  user: UserType
+  response: GenericScalar
+}
+
+input AccountInput {
+  username: String!
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+}
+
+type ActivateAccount {
+  response: GenericScalar
+}
+
+type UpdateAccount {
+  response: GenericScalar
+  user: UserType
+}
+
+type ChangePassword {
+  response: GenericScalar
+}
+
+type ResetPassword {
+  response: GenericScalar
+}
+
+type VerifyPassword {
+  response: GenericScalar
+}
+
+type ChangeEmail {
+  response: GenericScalar
+}
+
+type VerifyEmail {
+  response: GenericScalar
+}
+
+type UpdateProfile {
+  response: GenericScalar
+}
+
+"""
+Create scalar that ignores normal serialization/deserialization, since
+that will be handled by the multipart request spec
+"""
+scalar Upload
+
+type CreateComment {
+  response: GenericScalar
+}
+
+input CommentInput {
+  rate: Int!
+  parentId: ID
+  objectId: ID!
+  body: String!
+}
+
+type UpdateComment {
+  response: GenericScalar
+}
+
+type DeleteComment {
+  response: GenericScalar
+}
+
+type AddToCart {
+  response: GenericScalar
+}
+
+type DeleteCartItem {
+  response: GenericScalar
+}
+
+type CleareCartItem {
+  response: GenericScalar
+}
+
+type CreateOrder {
+  response: GenericScalar
+}

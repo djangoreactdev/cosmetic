@@ -1,0 +1,103 @@
+mutation createAccount(
+  $email: String!
+  $username: String!
+  $password: String!
+  $lastName: String!
+  $firstName: String!
+) {
+  createAccount(
+    input: {
+      username: $username
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      password: $password
+    }
+  ) {
+    user {
+      username
+    }
+    response
+  }
+}
+
+mutation activateAccount($email: String!, $token: String!) {
+  activateAccount(email: $email, token: $token) {
+    response
+  }
+}
+
+mutation tokenAuth($email: String!, $password: String!) {
+  tokenAuth(email: $email, password: $password) {
+    payload
+    refreshExpiresIn
+    token
+  }
+}
+
+mutation verifyToken($token: String!) {
+  verifyToken(token: $token) {
+    payload
+  }
+}
+
+mutation refreshToken($token: String!) {
+  refreshToken(token: $token) {
+    payload
+    refreshExpiresIn
+    token
+  }
+}
+
+mutation updateAccount(
+  $username: String!
+  $lastName: String!
+  $firstName: String!
+) {
+  updateAccount(
+    username: $username
+    firstName: $firstName
+    lastName: $lastName
+  ) {
+    response
+    user {
+      firstName
+      name
+      lastName
+    }
+  }
+}
+
+mutation changePassword($newPassword: String!, $oldPassword: String!) {
+  changePassword(newPassword: $newPassword, oldPassword: $oldPassword) {
+    response
+  }
+}
+
+mutation resetPassword($email: String!) {
+  resetPassword(email: $email) {
+    response
+  }
+}
+
+mutation verifyPassword(
+  $email: String!
+  $newPassword: String!
+  $token: String!
+) {
+  verifyPassword(email: $email, newPassword: $newPassword, token: $token) {
+    response
+  }
+}
+
+mutation changeEmail($email: String!) {
+  changeEmail(email: $email) {
+    response
+  }
+}
+
+mutation verifyEmail($email: String!, $token: String!) {
+  verifyEmail(email: $email, token: $token) {
+    response
+  }
+}

@@ -32,6 +32,7 @@ def token_add_to_redis(id, mode):
     token = _generate_code()
     name = f"{id}_{mode.lower()}"
     print(token)
+    print(id)
     redis.set(name=name, value=token, ex=14400)
     return token
 
