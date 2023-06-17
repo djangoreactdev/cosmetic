@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { heroslider1, heroslider2 } from "@/images/index";
 
+<<<<<<< HEAD
 export default function Hero() {
   const [images, setImages] = useState(2);
 
@@ -12,11 +13,31 @@ export default function Hero() {
       setImages(1);
     }
   };
+=======
+// import { Carousel } from "react-responsive-carousel";
+import Link from "next/link";
+
+export default function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = [heroslider1, heroslider2];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex(
+        currentIndex === images.length - 1 ? 0 : currentIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, images.length]);
+>>>>>>> 2df60ad... add testing data front
 
   return (
     <>
       <div className="hero-slider-section">
         <div className="hero-slider-active swiper-container">
+<<<<<<< HEAD
           <div className="swiper-wrapper">
             {images === 1 ? (
               <div className="hero-single-slider-item swiper-slide">
@@ -84,6 +105,9 @@ export default function Hero() {
               onClick={handleImages}
             ></button>
           </div>
+=======
+          <div className="swiper-wrapper">HERO</div>
+>>>>>>> 2df60ad... add testing data front
         </div>
       </div>
     </>

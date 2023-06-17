@@ -23,7 +23,7 @@ const authMiddleware = setContext(async (_, { headers }) => {
   let token: string = "";
   try {
     const session = await getSession();
-    token = session?.token as string;
+    token = session.user as string;
   } catch (error) {
     signOut();
   }

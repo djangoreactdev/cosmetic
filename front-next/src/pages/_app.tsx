@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "../styles/style.css";
 import "../assets/css/vendor/vendor.min.css";
 
@@ -15,15 +16,17 @@ import { SessionProvider } from "next-auth/react";
 import { Layout } from "@/components/layout";
 
 =======
+=======
+import "../styles/style.css";
+>>>>>>> 2df60ad... add testing data front
 import type { AppPropsWithLayout } from "../types/next";
-import { ThemeProvider } from "styled-components";
+
 import { ApolloProvider } from "@apollo/client";
-import { Client } from "src/apollo";
-// import { theme } from "../styled.config";
-import { Provider } from "react-redux";
-// import { store } from "store";
+import { Client } from "@/apollo";
+
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
+import { Layout } from "@/components/layout";
 
 >>>>>>> e4e73bc... add graphql to front
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
@@ -49,7 +52,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <SessionProvider session={pageProps.session}>
       <ApolloProvider client={Client}>
         <Toaster />
-        {getLayout(<Component {...pageProps} />, pageProps)}
+        <Layout>{getLayout(<Component {...pageProps} />, pageProps)}</Layout>
       </ApolloProvider>
     </SessionProvider>
 >>>>>>> e4e73bc... add graphql to front

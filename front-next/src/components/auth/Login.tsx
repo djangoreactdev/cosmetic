@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
@@ -7,6 +8,14 @@ import { useRouter } from "next/router";
 interface Idata {
   id: "string";
   password: "string";
+=======
+
+interface Idata {
+  data: {
+    email: "string";
+    password: "string";
+  };
+>>>>>>> 2df60ad... add testing data front
 }
 
 interface IProps {
@@ -14,15 +23,23 @@ interface IProps {
   loading: boolean;
 }
 
+<<<<<<< HEAD
 function Login({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
   const router = useRouter();
   const onChange = async (e: any) => {
+=======
+function Login({ onSubmit, loading }: IProps) {
+  const [data, setData] = useState<Idata | any>({});
+
+  const onChange = (e: any) => {
+>>>>>>> 2df60ad... add testing data front
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
+<<<<<<< HEAD
   const onSubmit = async (e: any, data: Idata) => {
     e.preventDefault();
     const response = await signIn("login", {
@@ -37,6 +54,8 @@ function Login({}: IProps) {
       router.push("/");
     }
   };
+=======
+>>>>>>> 2df60ad... add testing data front
 
   return (
     <>
@@ -85,8 +104,13 @@ function Login({}: IProps) {
                     <input
                       type="text"
                       onChange={onChange}
+<<<<<<< HEAD
                       value={data["id"] || ""}
                       name="id"
+=======
+                      value={data["email"] || ""}
+                      name="email"
+>>>>>>> 2df60ad... add testing data front
                     />
                   </div>
                   <div className="default-form-box">
@@ -111,7 +135,11 @@ function Login({}: IProps) {
                       <input type="checkbox" id="offer" />
                       <span>Remember me</span>
                     </label>
+<<<<<<< HEAD
                     <Link href="#">Lost your password?</Link>
+=======
+                    <a href="#">Lost your password?</a>
+>>>>>>> 2df60ad... add testing data front
                   </div>
                 </form>
               </div>

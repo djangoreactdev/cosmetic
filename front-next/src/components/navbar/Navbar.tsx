@@ -2,12 +2,21 @@ import React from "react";
 import Image from "next/image";
 import { logo_black, menu_banner } from "@/images/index";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Client } from "@/graphql/apollo";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import { NavCategoriesDocument } from "@/graphql/generated";
+=======
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "../customContext";
+import { getCategories } from "@/lib/network";
+import { setCategory, setSearch } from "@/lib/dataVariables";
+import { useRouter } from "next/router";
+import Category from "@/types";
+>>>>>>> 2df60ad... add testing data front
 
 export function Navbar() {
   const [search, setsearch] = useState(false);
@@ -17,6 +26,7 @@ export function Navbar() {
   const [cart, setCart] = useState(false);
   const [stickyHeader, setStickyHeader] = useState(false);
 
+<<<<<<< HEAD
   const [categorys, setCategories] = useState<(typeof NavCategoriesDocument)[]>(
     []
   );
@@ -42,6 +52,40 @@ export function Navbar() {
     getCategories();
   }, []);
 
+=======
+  const [categorys, setCategories] = useState<Category[]>([]);
+  const [fetching, setFetching] = useState(true);
+
+  // const {
+  //   state: { categories, userInfo, Search },
+  //   dispatch,
+  // }: any = useContext(MyContext);
+
+  // useEffect(() => {
+  //   if (categories) {
+  //     setCategories(categories);
+  //     setFetching(false);
+  //   } else {
+  //     fetchCategories();
+  //   }
+  // }, []);
+
+  // const fetchCategories = async () => {
+  //   const res = await getCategories();
+
+  //   if (res) {
+  //     setCategories(res);
+  //     dispatch({ type: setCategory, payload: res });
+  //     setFetching(false);
+  //   }
+  // };
+
+  const handleOnClick = (name: string) => {
+    dispatch({ type: setSearch, payload: name });
+    useRouter().push("/search");
+  };
+
+>>>>>>> 2df60ad... add testing data front
   useEffect(() => {
     function handleScroll() {
       if (window.scrollY > 150) {
@@ -86,6 +130,7 @@ export function Navbar() {
     <>
       <header className="header-section d-none d-xl-block ">
         <div className="header-wrapper">
+<<<<<<< HEAD
           <div className="header-top header-top-bg--black section-fluid">
             <div className="container">
               <div className="col-12 d-flex align-items-center justify-content-between">
@@ -123,6 +168,10 @@ export function Navbar() {
 
           <div
             className={`header-bottom header-bottom-color--white section-fluid sticky-header sticky-color--white ${
+=======
+          <div
+            className={`header-bottom header-bottom-color--golden section-fluid sticky-header sticky-color--golden ${
+>>>>>>> 2df60ad... add testing data front
               stickyHeader ? "sticky" : ""
             }`}
           >
@@ -157,6 +206,18 @@ export function Navbar() {
                                   Shop Layouts
                                 </Link>
                                 <ul className="mega-menu-sub">
+<<<<<<< HEAD
+=======
+                                  {!fetching &&
+                                    categorys.map((item, id) => (
+                                      <li>
+                                        <Link href={item.slug}>
+                                          {item.name}
+                                        </Link>
+                                      </li>
+                                    ))}
+
+>>>>>>> 2df60ad... add testing data front
                                   <li>
                                     <Link href="shop-grid-sidebar-right.html">
                                       Grid Right Sidebar
@@ -164,6 +225,7 @@ export function Navbar() {
                                   </li>
                                 </ul>
                               </li>
+<<<<<<< HEAD
                               {categorys &&
                                 categorys.map((item, id) => (
                                   <li key={id} className="mega-menu-item">
@@ -185,6 +247,8 @@ export function Navbar() {
                                     </ul>
                                   </li>
                                 ))}
+=======
+>>>>>>> 2df60ad... add testing data front
                             </ul>
                             <div className="menu-banner">
                               <Link href="#" className="menu-banner-link">
@@ -229,7 +293,10 @@ export function Navbar() {
                   <ul className="header-action-link action-color--black action-hover-color--golden">
                     <li>
                       <a
+<<<<<<< HEAD
                         href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                         onClick={() => setWishlist(!wishlist)}
                         className="offcanvas-toggle"
                       >
@@ -239,7 +306,10 @@ export function Navbar() {
                     </li>
                     <li>
                       <a
+<<<<<<< HEAD
                         href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                         onClick={() => setCart(!cart)}
                         className="offcanvas-toggle"
                       >
@@ -248,13 +318,20 @@ export function Navbar() {
                       </a>
                     </li>
                     <li>
+<<<<<<< HEAD
                       <a href="#" onClick={() => setsearch(!search)}>
+=======
+                      <a onClick={() => setsearch(!search)}>
+>>>>>>> 2df60ad... add testing data front
                         <i className="fa-solid fa-magnifying-glass fa-gl"></i>
                       </a>
                     </li>
                     <li>
                       <a
+<<<<<<< HEAD
                         href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                         onClick={() => setMenu(!menu)}
                         className="offacnvas offside-about offcanvas-toggle"
                       >
@@ -269,7 +346,11 @@ export function Navbar() {
         </div>
       </header>
 
+<<<<<<< HEAD
       <div className="mobile-header mobile-header-bg-color--white section-fluid d-lg-block d-xl-none">
+=======
+      <div className="mobile-header mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
+>>>>>>> 2df60ad... add testing data front
         <div className="container">
           <div className="row">
             <div className="col-12 d-flex align-items-center justify-content-between">
@@ -288,13 +369,20 @@ export function Navbar() {
               <div className="mobile-right-side">
                 <ul className="header-action-link action-color--black action-hover-color--golden">
                   <li>
+<<<<<<< HEAD
                     <a href="#" onClick={() => setsearch(!search)}>
+=======
+                    <a onClick={() => setsearch(!search)}>
+>>>>>>> 2df60ad... add testing data front
                       <i className="fa-solid fa-magnifying-glass fa-gl"></i>
                     </a>
                   </li>
                   <li>
                     <a
+<<<<<<< HEAD
                       href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                       onClick={() => setWishlist(!wishlist)}
                       className="offcanvas-toggle"
                     >
@@ -304,7 +392,10 @@ export function Navbar() {
                   </li>
                   <li>
                     <a
+<<<<<<< HEAD
                       href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                       onClick={() => setCart(!cart)}
                       className="offcanvas-toggle"
                     >
@@ -314,7 +405,10 @@ export function Navbar() {
                   </li>
                   <li>
                     <a
+<<<<<<< HEAD
                       href="#"
+=======
+>>>>>>> 2df60ad... add testing data front
                       onClick={() => setMenuMobile(!menuMobile)}
                       className="offacnvas offside-about offcanvas-toggle"
                     >

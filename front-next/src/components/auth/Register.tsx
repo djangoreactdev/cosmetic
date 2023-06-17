@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -9,6 +10,15 @@ interface Idata {
   username: "string";
   firstName: "string";
   password: "string";
+=======
+import React, { useState } from "react";
+
+interface Idata {
+  data: {
+    email: "string";
+    password: "string";
+  };
+>>>>>>> 2df60ad... add testing data front
 }
 
 interface IProps {
@@ -16,9 +26,15 @@ interface IProps {
   loading: boolean;
 }
 
+<<<<<<< HEAD
 function Register({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
   const router = useRouter();
+=======
+function Register({ onSubmit, loading }: IProps) {
+  const [data, setData] = useState<Idata | any>({});
+
+>>>>>>> 2df60ad... add testing data front
   const onChange = (e: any) => {
     setData({
       ...data,
@@ -26,6 +42,7 @@ function Register({}: IProps) {
     });
   };
 
+<<<<<<< HEAD
   const onSubmit = async (e: any, data: Idata) => {
     e.preventDefault();
     const response = await signIn("register", {
@@ -45,6 +62,8 @@ function Register({}: IProps) {
     }
   };
 
+=======
+>>>>>>> 2df60ad... add testing data front
   return (
     <>
       <div className="breadcrumb-section breadcrumb-bg-color--golden">
@@ -84,6 +103,7 @@ function Register({}: IProps) {
                 data-aos-delay="200"
               >
                 <h3>Register</h3>
+<<<<<<< HEAD
                 <form onSubmit={(e) => onSubmit(e, data)}>
                   <div className="default-form-box">
                     <label>Last Name</label>
@@ -112,10 +132,14 @@ function Register({}: IProps) {
                       name="username"
                     />
                   </div>
+=======
+                <form action="#">
+>>>>>>> 2df60ad... add testing data front
                   <div className="default-form-box">
                     <label>
                       Email address <span>*</span>
                     </label>
+<<<<<<< HEAD
                     <input
                       type="email"
                       onChange={onChange}
@@ -145,6 +169,15 @@ function Register({}: IProps) {
                       value={data["password2"] || ""}
                       name="password2"
                     />
+=======
+                    <input type="text" />
+                  </div>
+                  <div className="default-form-box">
+                    <label>
+                      Passwords <span>*</span>
+                    </label>
+                    <input type="password" />
+>>>>>>> 2df60ad... add testing data front
                   </div>
                   <div className="login_submit">
                     <button
