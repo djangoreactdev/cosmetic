@@ -374,6 +374,7 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 # EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 # DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
+
 >>>>>>> 360df0d... add backend for ecommerce
 
 
