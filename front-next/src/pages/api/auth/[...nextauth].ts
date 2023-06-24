@@ -1,16 +1,14 @@
 import NextAuth, { AuthOptions, Awaitable, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Client } from "src/apollo";
-import { checkIsEmail } from "../../../utils";
+import { Client } from "@/graphql/apollo";
+import { checkIsEmail } from "@/utils";
 import {
-  LoginDocument,
-  MutationLoginArgs,
+  TokenAuthDocument,
   RefreshTokenDocument,
-  RevokeTokenDocument,
-  MutationRegisterArgs,
-  RegisterDocument,
-} from "src/graphql/generated";
+  CreateAccountDocument,
+  AccountInput,
+} from "@/graphql/generated";
 import jwtDecode from "jwt-decode";
 
 export const authOptions: AuthOptions = {
@@ -35,7 +33,9 @@ export const authOptions: AuthOptions = {
         const id: string = credentials?.id || "";
         const isEmail = checkIsEmail(id);
 
-        let param: MutationLoginArgs;
+        let param:
+          | { username: string; password: string }
+          | { email: string; password: string };
 
         if (isEmail) {
           param = {
@@ -50,18 +50,18 @@ export const authOptions: AuthOptions = {
         }
 
         const res = await Client.mutate({
-          mutation: LoginDocument,
+          mutation: TokenAuthDocument,
           variables: param,
         });
 
-        const user = res.data?.login;
+        const user = res.data;
 
         // If no error and we have user data, return it
-        if (user?.success) {
+        if (user !== undefined) {
           const decoded: { exp: number; username: string } = jwtDecode(
-            user.token!
+            user.tokenAuth.token
           );
-
+          console.log(decoded);
           return {
             ...user,
             isNewUser: false,
@@ -94,31 +94,39 @@ export const authOptions: AuthOptions = {
           type: "email",
           name: "email",
         },
-        password1: {
+        lastName: {
+          label: "Last Name",
+          type: "text",
+          name: "lastName",
+        },
+        firstName: {
+          label: "First Name",
+          type: "text",
+          name: "firstName",
+        },
+        password: {
           label: "Password",
           type: "password",
           name: "password1",
         },
-        password2: {
-          label: "Confirm password",
-          type: "password",
-          name: "password2",
-        },
       },
       authorize: async (credentials, req) => {
-        const param: MutationRegisterArgs = {
+        const param: AccountInput = {
           username: credentials?.username || "",
           email: credentials?.email || "",
-          password1: credentials?.password1 || "",
-          password2: credentials?.password2 || "",
+          lastName: credentials?.lastName || "",
+          firstName: credentials?.firstName || "",
+          password: credentials?.password || "",
         };
 
         const res = await Client.mutate({
-          mutation: RegisterDocument,
+          mutation: CreateAccountDocument,
           variables: param,
         });
 
-        const user = res.data?.register;
+        const user = res.data?.createAccount;
+
+        console.log(user);
 
         // If no error and we have user data, return it
         if (user?.success) {

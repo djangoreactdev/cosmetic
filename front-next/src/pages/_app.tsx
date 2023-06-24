@@ -3,7 +3,7 @@ import "../styles/style.css";
 import type { AppPropsWithLayout } from "../types/next";
 
 import { ApolloProvider } from "@apollo/client";
-import { Client } from "@/apollo";
+import { Client } from "@/graphql/apollo";
 
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";

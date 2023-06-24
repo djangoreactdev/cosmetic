@@ -4,7 +4,7 @@ import { Puff } from "react-loading-icons";
 
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Client } from "@/apollo";
+import { Client } from "@/graphql/apollo";
 import Login from "@/components/auth/Login";
 
 const login = () => {

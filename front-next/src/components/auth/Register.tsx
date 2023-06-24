@@ -1,10 +1,12 @@
+import { signIn } from "next-auth/react";
 import React, { useState } from "react";
 
 interface Idata {
-  data: {
-    email: "string";
-    password: "string";
-  };
+  lastName: "string";
+  email: "string";
+  username: "string";
+  firstName: "string";
+  password: "string";
 }
 
 interface IProps {
@@ -12,7 +14,7 @@ interface IProps {
   loading: boolean;
 }
 
-function Register({ onSubmit, loading }: IProps) {
+function Register({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
 
   const onChange = (e: any) => {
@@ -20,6 +22,19 @@ function Register({ onSubmit, loading }: IProps) {
       ...data,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const onSubmit = async (e: any, data: Idata) => {
+    e.preventDefault();
+    const response = await signIn("register", {
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      username: data.username,
+      redirect: false,
+    });
+    console.log(response);
   };
 
   return (
@@ -61,18 +76,67 @@ function Register({ onSubmit, loading }: IProps) {
                 data-aos-delay="200"
               >
                 <h3>Register</h3>
-                <form action="#">
+                <form onSubmit={(e) => onSubmit(e, data)}>
+                  <div className="default-form-box">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      onChange={onChange}
+                      value={data["lastName"] || ""}
+                      name="lastName"
+                    />
+                  </div>
+                  <div className="default-form-box">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      onChange={onChange}
+                      value={data["firstName"] || ""}
+                      name="firstName"
+                    />
+                  </div>
+                  <div className="default-form-box">
+                    <label>Username</label>
+                    <input
+                      type="text"
+                      onChange={onChange}
+                      value={data["username"] || ""}
+                      name="username"
+                    />
+                  </div>
                   <div className="default-form-box">
                     <label>
                       Email address <span>*</span>
                     </label>
-                    <input type="text" />
+                    <input
+                      type="email"
+                      onChange={onChange}
+                      value={data["email"] || ""}
+                      name="email"
+                    />
                   </div>
                   <div className="default-form-box">
                     <label>
-                      Passwords <span>*</span>
+                      Password <span>*</span>
                     </label>
-                    <input type="password" />
+                    <input
+                      type="password"
+                      onChange={onChange}
+                      value={data["password"] || ""}
+                      name="password"
+                    />
+                  </div>
+
+                  <div className="default-form-box">
+                    <label>
+                      Password repeat <span>*</span>
+                    </label>
+                    <input
+                      type="password"
+                      onChange={onChange}
+                      value={data["password2"] || ""}
+                      name="password2"
+                    />
                   </div>
                   <div className="login_submit">
                     <button

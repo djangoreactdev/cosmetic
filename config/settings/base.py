@@ -366,28 +366,6 @@ EMAIL_USE_TLS = True
 # Cart config
 CART_SESSION_ID = "cart"
 
-
-# if DEBUG == True:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django_redis.cache.RedisCache",
-#             "LOCATION": "redis://127.0.0.1:6379/1",
-#             "OPTIONS": {
-#                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             },
-#         }
-#     }
-# else:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django_redis.cache.RedisCache",
-#             "LOCATION": "redis://redis/1",
-#             "OPTIONS": {
-#                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             },
-#         }
-#     }
-
 APPEND_SLASH = False
 
 CATEGORIES_TIMEOUT = 1000
@@ -395,6 +373,6 @@ PRODUCTS_TIMEOUT = 1000
 ARTICLES_TIMEOUT = 1000
 EXPIRED_TIME = 900
 
-# CORS_ALLOWED_ORIGINS = [
-#      "http://localhost:3000","http://192.168.59.128:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+     "http://localhost:3000","http://192.168.59.128:3000",
+]

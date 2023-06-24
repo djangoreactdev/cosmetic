@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 interface Idata {
-  data: {
-    email: "string";
-    password: "string";
-  };
+  id: "string";
+  password: "string";
 }
 
 interface IProps {
@@ -12,14 +12,23 @@ interface IProps {
   loading: boolean;
 }
 
-function Login({ onSubmit, loading }: IProps) {
+function Login({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
 
-  const onChange = (e: any) => {
+  const onChange = async (e: any) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
+  };
+  const onSubmit = async (e: any, data: Idata) => {
+    e.preventDefault();
+    const response = await signIn("login", {
+      id: data.id,
+      password: data.password,
+      redirect: false,
+    });
+    console.log(response);
   };
 
   return (
@@ -69,8 +78,8 @@ function Login({ onSubmit, loading }: IProps) {
                     <input
                       type="text"
                       onChange={onChange}
-                      value={data["email"] || ""}
-                      name="email"
+                      value={data["id"] || ""}
+                      name="id"
                     />
                   </div>
                   <div className="default-form-box">
@@ -95,7 +104,7 @@ function Login({ onSubmit, loading }: IProps) {
                       <input type="checkbox" id="offer" />
                       <span>Remember me</span>
                     </label>
-                    <a href="#">Lost your password?</a>
+                    <Link href="#">Lost your password?</Link>
                   </div>
                 </form>
               </div>
