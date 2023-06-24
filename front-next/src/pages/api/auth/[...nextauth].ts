@@ -2,6 +2,7 @@ import NextAuth, { AuthOptions, Awaitable, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Client } from "@/graphql/apollo";
 import { checkIsEmail } from "@/utils";
 import {
@@ -13,15 +14,24 @@ import {
 =======
 import { Client } from "src/apollo";
 import { checkIsEmail } from "../../../utils";
+=======
+import { Client } from "@/graphql/apollo";
+import { checkIsEmail } from "@/utils";
+>>>>>>> 583e06f... add login
 import {
-  LoginDocument,
-  MutationLoginArgs,
+  TokenAuthDocument,
   RefreshTokenDocument,
+<<<<<<< HEAD
   RevokeTokenDocument,
   MutationRegisterArgs,
   RegisterDocument,
 } from "src/graphql/generated";
 >>>>>>> e4e73bc... add graphql to front
+=======
+  CreateAccountDocument,
+  AccountInput,
+} from "@/graphql/generated";
+>>>>>>> 583e06f... add login
 import jwtDecode from "jwt-decode";
 
 export const authOptions: AuthOptions = {
@@ -47,12 +57,18 @@ export const authOptions: AuthOptions = {
         const isEmail = checkIsEmail(id);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         let param:
           | { username: string; password: string }
           | { email: string; password: string };
 =======
         let param: MutationLoginArgs;
 >>>>>>> e4e73bc... add graphql to front
+=======
+        let param:
+          | { username: string; password: string }
+          | { email: string; password: string };
+>>>>>>> 583e06f... add login
 
         if (isEmail) {
           param = {
@@ -67,6 +83,7 @@ export const authOptions: AuthOptions = {
         }
 
         const res = await Client.mutate({
+<<<<<<< HEAD
 <<<<<<< HEAD
           mutation: TokenAuthDocument,
           variables: param,
@@ -86,17 +103,20 @@ export const authOptions: AuthOptions = {
             email: decoded.email,
 =======
           mutation: LoginDocument,
+=======
+          mutation: TokenAuthDocument,
+>>>>>>> 583e06f... add login
           variables: param,
         });
 
-        const user = res.data?.login;
+        const user = res.data;
 
         // If no error and we have user data, return it
-        if (user?.success) {
+        if (user !== undefined) {
           const decoded: { exp: number; username: string } = jwtDecode(
-            user.token!
+            user.tokenAuth.token
           );
-
+          console.log(decoded);
           return {
             ...user,
             isNewUser: false,
@@ -138,6 +158,9 @@ export const authOptions: AuthOptions = {
           name: "email",
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 583e06f... add login
         lastName: {
           label: "Last Name",
           type: "text",
@@ -149,6 +172,7 @@ export const authOptions: AuthOptions = {
           name: "firstName",
         },
         password: {
+<<<<<<< HEAD
           label: "Password",
           type: "password",
           name: "password",
@@ -190,30 +214,30 @@ export const authOptions: AuthOptions = {
           throw new Error(`${Object.keys(data.message)}: ${errorMessage}`);
 =======
         password1: {
+=======
+>>>>>>> 583e06f... add login
           label: "Password",
           type: "password",
           name: "password1",
         },
-        password2: {
-          label: "Confirm password",
-          type: "password",
-          name: "password2",
-        },
       },
       authorize: async (credentials, req) => {
-        const param: MutationRegisterArgs = {
+        const param: AccountInput = {
           username: credentials?.username || "",
           email: credentials?.email || "",
-          password1: credentials?.password1 || "",
-          password2: credentials?.password2 || "",
+          lastName: credentials?.lastName || "",
+          firstName: credentials?.firstName || "",
+          password: credentials?.password || "",
         };
 
         const res = await Client.mutate({
-          mutation: RegisterDocument,
+          mutation: CreateAccountDocument,
           variables: param,
         });
 
-        const user = res.data?.register;
+        const user = res.data?.createAccount;
+
+        console.log(user);
 
         // If no error and we have user data, return it
         if (user?.success) {

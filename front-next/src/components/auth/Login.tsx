@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
@@ -16,6 +17,14 @@ interface Idata {
     password: "string";
   };
 >>>>>>> 2df60ad... add testing data front
+=======
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+
+interface Idata {
+  id: "string";
+  password: "string";
+>>>>>>> 583e06f... add login
 }
 
 interface IProps {
@@ -23,6 +32,7 @@ interface IProps {
   loading: boolean;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 function Login({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
@@ -34,12 +44,21 @@ function Login({ onSubmit, loading }: IProps) {
 
   const onChange = (e: any) => {
 >>>>>>> 2df60ad... add testing data front
+=======
+function Login({}: IProps) {
+  const [data, setData] = useState<Idata | any>({});
+
+  const onChange = async (e: any) => {
+>>>>>>> 583e06f... add login
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 583e06f... add login
   const onSubmit = async (e: any, data: Idata) => {
     e.preventDefault();
     const response = await signIn("login", {
@@ -47,6 +66,7 @@ function Login({ onSubmit, loading }: IProps) {
       password: data.password,
       redirect: false,
     });
+<<<<<<< HEAD
     if (response?.error) {
       toast.error(response?.error);
     } else {
@@ -56,6 +76,10 @@ function Login({ onSubmit, loading }: IProps) {
   };
 =======
 >>>>>>> 2df60ad... add testing data front
+=======
+    console.log(response);
+  };
+>>>>>>> 583e06f... add login
 
   return (
     <>
@@ -105,12 +129,17 @@ function Login({ onSubmit, loading }: IProps) {
                       type="text"
                       onChange={onChange}
 <<<<<<< HEAD
+<<<<<<< HEAD
                       value={data["id"] || ""}
                       name="id"
 =======
                       value={data["email"] || ""}
                       name="email"
 >>>>>>> 2df60ad... add testing data front
+=======
+                      value={data["id"] || ""}
+                      name="id"
+>>>>>>> 583e06f... add login
                     />
                   </div>
                   <div className="default-form-box">
@@ -136,10 +165,14 @@ function Login({ onSubmit, loading }: IProps) {
                       <span>Remember me</span>
                     </label>
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <Link href="#">Lost your password?</Link>
 =======
                     <a href="#">Lost your password?</a>
 >>>>>>> 2df60ad... add testing data front
+=======
+                    <Link href="#">Lost your password?</Link>
+>>>>>>> 583e06f... add login
                   </div>
                 </form>
               </div>

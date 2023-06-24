@@ -382,6 +382,7 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 CART_SESSION_ID = "cart"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 # if DEBUG == True:
@@ -406,6 +407,8 @@ CART_SESSION_ID = "cart"
 #     }
 
 >>>>>>> 360df0d... add backend for ecommerce
+=======
+>>>>>>> 583e06f... add login
 APPEND_SLASH = False
 
 CATEGORIES_TIMEOUT = 1000
@@ -413,6 +416,7 @@ PRODUCTS_TIMEOUT = 1000
 ARTICLES_TIMEOUT = 1000
 EXPIRED_TIME = 900
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:3000"])
 # from datetime import timedelta
@@ -428,3 +432,8 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localho
 #      "http://localhost:3000","http://192.168.59.128:3000",
 # ]
 >>>>>>> 360df0d... add backend for ecommerce
+=======
+CORS_ALLOWED_ORIGINS = [
+     "http://localhost:3000","http://192.168.59.128:3000",
+]
+>>>>>>> 583e06f... add login
