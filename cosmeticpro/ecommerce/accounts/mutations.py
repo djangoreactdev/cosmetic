@@ -1,14 +1,15 @@
-from django.http import response
 from ..accounts.models import Profile
 import graphene
 import graphql_jwt
 from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
 from graphene_file_upload.scalars import Upload
+from graphql_jwt.shortcuts import get_token
 
 from cosmeticpro.users.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+
 
 from .types import UserType
 from .utils import get_from_redis, token_delete_to_redis
@@ -21,6 +22,34 @@ class AccountInput(graphene.InputObjectType):
     password = graphene.String(required=True)
     first_name = graphene.String()
     last_name = graphene.String()
+
+
+# class AccountLogin(graphene.Mutation):
+#     class Arguments:
+#         email = graphene.String()
+#         username = graphene.String()
+#         password = graphene.String()
+
+#     response = GenericScalar()
+
+#     def mutate(parent, info, username, email, password):
+#         try:
+#             user = User.objects.get(username=username)
+#             if user.check_password(password):
+#                 return AccountLogin(response={"status": "success", "message": "login success."})
+#             else:
+#                 return AccountLogin(response={"status": "error", "message": "Your password is invalid."})
+#         except User.DoesNotExist:
+#             try:
+#                 user = User.objects.get(email=email)
+#                 if user.check_password(password):
+#                     user_data = serializers.serialize('json', [user])
+#                     return AccountLogin( response={"status": "success", "message": "login success.",
+#                                                    "token":  get_token(user), "user": user_data})
+#                 else:
+#                     return AccountLogin(response={"status": "error", "message": "Your password is invalid."})
+#             except User.DoesNotExist:
+#                 return AccountLogin(response={"status": "error", "message": "Your email is invalid."})
 
 
 class ChangeEmail(graphene.Mutation):
@@ -61,7 +90,7 @@ class VerifyEmail(graphene.Mutation):
         try:
             user = User.objects.get(email=email)
             token_from_redis = get_from_redis(user.id, "change_email")
-        
+
             if not token_from_redis:
                 return VerifyEmail(response={"status": "error", "message": "Wrong/Expired Token!"})
 
@@ -174,7 +203,6 @@ class CreateAccount(graphene.Mutation):
                     user = user_exists
 
             except User.DoesNotExist:
-            
                 user = User.objects.create_user(
                     username=input.username,
                     email=input.email,
@@ -191,10 +219,20 @@ class CreateAccount(graphene.Mutation):
                 first_name=user.first_name,
                 last_name=user.last_name,
             )
-            return CreateAccount(user=user, response={"status": "success", "message": "create user."})
+            token = get_token(user)
+            print(token)
+            return CreateAccount(
+                response={
+                    "status": "success",
+                    "message": "create user.",
+                    "token": token,
+                }
+            )
 
         except ValidationError:
-            return CreateAccount(user=user, response={"status": "error", "message": "Enter a valid e-mail address."})
+            return CreateAccount(
+                response={"status": "error", "message": "Enter a valid e-mail address."},
+            )
 
 
 class ActivateAccount(graphene.Mutation):
@@ -270,7 +308,9 @@ class AccountsMutation(graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
+    revoke_token = graphql_jwt.Revoke.Field()
 
+    # account_login = AccountLogin.Field()
     create_account = CreateAccount.Field()
     activate_account = ActivateAccount.Field()
     update_account = UpdateAccount.Field()

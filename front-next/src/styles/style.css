@@ -18329,6 +18329,32 @@ Pages - Contact
   margin-top: 40px;
 }
 
+/*****************************
+* Pages - Empty Cart
+*****************************/
+.email-verify .title {
+  font-size: 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 40px;
+  color: #b19361;
+}
+.email-verify .sub-title {
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: none;
+  margin-top: 25px;
+  color: #777;
+}
+@media (min-width: 992px) {
+  .email-verify .sub-title {
+    font-size: 26px;
+  }
+}
+.eemail-verify .btn {
+  margin-top: 40px;
+}
+
 /*Layout*/
 /*****************************
 * Layout - Header

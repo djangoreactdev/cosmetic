@@ -4,24 +4,24 @@ import { ObtainJsonWebToken } from "src/graphql/generated";
 
 declare module "next-auth" {
   interface User extends ObtainJsonWebToken {
-    isNewUser: boolean;
+    token: string;
     tokenExpiresIn: number;
     username: string;
+    email: string;
   }
 
   interface Session extends DefaultSession {
     token: string;
     username: string;
-    isNewUser: boolean;
+    email: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken: string;
-    refreshToken: string;
     username: string;
-    isNewUser: boolean;
+    email: string;
     tokenExpiresIn: number;
   }
 }

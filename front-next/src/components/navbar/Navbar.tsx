@@ -2,12 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { logo_black, menu_banner } from "@/images/index";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { MyContext } from "../customContext";
-import { getCategories } from "@/lib/network";
-import { setCategory, setSearch } from "@/lib/dataVariables";
+import { useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import Category from "@/types";
+import { Client } from "@/graphql/apollo";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import { NavCategoriesDocument } from "@/graphql/generated";
 
 export function Navbar() {
   const [search, setsearch] = useState(false);
@@ -17,37 +17,30 @@ export function Navbar() {
   const [cart, setCart] = useState(false);
   const [stickyHeader, setStickyHeader] = useState(false);
 
-  const [categorys, setCategories] = useState<Category[]>([]);
-  const [fetching, setFetching] = useState(true);
+  const [categorys, setCategories] = useState<(typeof NavCategoriesDocument)[]>(
+    []
+  );
 
-  // const {
-  //   state: { categories, userInfo, Search },
-  //   dispatch,
-  // }: any = useContext(MyContext);
+  const navigate = useRouter().push;
 
-  // useEffect(() => {
-  //   if (categories) {
-  //     setCategories(categories);
-  //     setFetching(false);
-  //   } else {
-  //     fetchCategories();
-  //   }
-  // }, []);
+  const { status } = useSession();
 
-  // const fetchCategories = async () => {
-  //   const res = await getCategories();
-
-  //   if (res) {
-  //     setCategories(res);
-  //     dispatch({ type: setCategory, payload: res });
-  //     setFetching(false);
-  //   }
-  // };
-
-  const handleOnClick = (name: string) => {
-    dispatch({ type: setSearch, payload: name });
-    useRouter().push("/search");
+  const logOut = () => {
+    signOut({ redirect: false });
+    Client.cache.reset();
+    navigate("/");
   };
+
+  async function getCategories() {
+    const { data } = await Client.query({
+      query: NavCategoriesDocument,
+    });
+    setCategories(data.categories);
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   useEffect(() => {
     function handleScroll() {
@@ -93,8 +86,43 @@ export function Navbar() {
     <>
       <header className="header-section d-none d-xl-block ">
         <div className="header-wrapper">
+          <div className="header-top header-top-bg--black section-fluid">
+            <div className="container">
+              <div className="col-12 d-flex align-items-center justify-content-between">
+                <div className="header-top-left">
+                  <div className="header-top-contact header-top-contact-color--white header-top-contact-hover-color--green">
+                    <Link href="tel:0123456789" className="icon-space-right">
+                      <i className="icon-call-in"></i>0123456789
+                    </Link>
+                    <a
+                      href="mailto:demo@example.com"
+                      className="icon-space-right"
+                    >
+                      <i className="icon-envelope"></i>demo@example.com
+                    </a>
+                  </div>
+                </div>
+                <div className="header-top-right">
+                  <div className="header-top-user-link header-top-user-link-color--white header-top-user-link-hover-color--golden">
+                    {status !== "authenticated" ? (
+                      <>
+                        <Link href="/login">Login</Link>
+                        <Link href="/register">Register</Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link href="/account">My Account</Link>
+                        <button onClick={logOut}>Logout</button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
-            className={`header-bottom header-bottom-color--golden section-fluid sticky-header sticky-color--golden ${
+            className={`header-bottom header-bottom-color--white section-fluid sticky-header sticky-color--white ${
               stickyHeader ? "sticky" : ""
             }`}
           >
@@ -129,15 +157,6 @@ export function Navbar() {
                                   Shop Layouts
                                 </Link>
                                 <ul className="mega-menu-sub">
-                                  {!fetching &&
-                                    categorys.map((item, id) => (
-                                      <li>
-                                        <Link href={item.slug}>
-                                          {item.name}
-                                        </Link>
-                                      </li>
-                                    ))}
-
                                   <li>
                                     <Link href="shop-grid-sidebar-right.html">
                                       Grid Right Sidebar
@@ -145,6 +164,27 @@ export function Navbar() {
                                   </li>
                                 </ul>
                               </li>
+                              {categorys &&
+                                categorys.map((item, id) => (
+                                  <li key={id} className="mega-menu-item">
+                                    <Link
+                                      href={item.slug}
+                                      className="mega-menu-item-title"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                    <ul className="mega-menu-sub">
+                                      {item.children &&
+                                        item.children.map((child, id) => (
+                                          <li key={id}>
+                                            <Link href={child.slug}>
+                                              {child.name}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                    </ul>
+                                  </li>
+                                ))}
                             </ul>
                             <div className="menu-banner">
                               <Link href="#" className="menu-banner-link">
@@ -189,6 +229,7 @@ export function Navbar() {
                   <ul className="header-action-link action-color--black action-hover-color--golden">
                     <li>
                       <a
+                        href="#"
                         onClick={() => setWishlist(!wishlist)}
                         className="offcanvas-toggle"
                       >
@@ -198,6 +239,7 @@ export function Navbar() {
                     </li>
                     <li>
                       <a
+                        href="#"
                         onClick={() => setCart(!cart)}
                         className="offcanvas-toggle"
                       >
@@ -206,12 +248,13 @@ export function Navbar() {
                       </a>
                     </li>
                     <li>
-                      <a onClick={() => setsearch(!search)}>
+                      <a href="#" onClick={() => setsearch(!search)}>
                         <i className="fa-solid fa-magnifying-glass fa-gl"></i>
                       </a>
                     </li>
                     <li>
                       <a
+                        href="#"
                         onClick={() => setMenu(!menu)}
                         className="offacnvas offside-about offcanvas-toggle"
                       >
@@ -226,7 +269,7 @@ export function Navbar() {
         </div>
       </header>
 
-      <div className="mobile-header mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
+      <div className="mobile-header mobile-header-bg-color--white section-fluid d-lg-block d-xl-none">
         <div className="container">
           <div className="row">
             <div className="col-12 d-flex align-items-center justify-content-between">
@@ -245,12 +288,13 @@ export function Navbar() {
               <div className="mobile-right-side">
                 <ul className="header-action-link action-color--black action-hover-color--golden">
                   <li>
-                    <a onClick={() => setsearch(!search)}>
+                    <a href="#" onClick={() => setsearch(!search)}>
                       <i className="fa-solid fa-magnifying-glass fa-gl"></i>
                     </a>
                   </li>
                   <li>
                     <a
+                      href="#"
                       onClick={() => setWishlist(!wishlist)}
                       className="offcanvas-toggle"
                     >
@@ -260,6 +304,7 @@ export function Navbar() {
                   </li>
                   <li>
                     <a
+                      href="#"
                       onClick={() => setCart(!cart)}
                       className="offcanvas-toggle"
                     >
@@ -269,6 +314,7 @@ export function Navbar() {
                   </li>
                   <li>
                     <a
+                      href="#"
                       onClick={() => setMenuMobile(!menuMobile)}
                       className="offacnvas offside-about offcanvas-toggle"
                     >

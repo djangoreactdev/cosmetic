@@ -1,5 +1,5 @@
-import heroslider1 from "@/images/hero-slider/home-1/hero-slider-1.jpg";
-import heroslider2 from "@/images/hero-slider/home-1/hero-slider-2.jpg";
+import heroslider1 from "@/images/hero-slider/home-2/hero-slider-1.jpg";
+import heroslider2 from "@/images/hero-slider/home-2/hero-slider-2.jpg";
 import servicepromo1 from "@/images/icons/service-promo-1.png";
 import servicepromo2 from "@/images/icons/service-promo-2.png";
 import servicepromo3 from "@/images/icons/service-promo-3.png";

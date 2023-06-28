@@ -1,5 +1,7 @@
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 
 interface Idata {
   lastName: "string";
@@ -16,7 +18,7 @@ interface IProps {
 
 function Register({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
-
+  const router = useRouter();
   const onChange = (e: any) => {
     setData({
       ...data,
@@ -35,6 +37,12 @@ function Register({}: IProps) {
       redirect: false,
     });
     console.log(response);
+    if (response?.error) {
+      toast.error(response?.error);
+    } else {
+      toast.success("Login success");
+      router.push("/");
+    }
   };
 
   return (

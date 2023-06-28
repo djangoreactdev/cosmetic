@@ -1,0 +1,12 @@
+query navCategories {
+  categories {
+    id
+    name
+    slug
+    children {
+      name
+      id
+      slug
+    }
+  }
+}
