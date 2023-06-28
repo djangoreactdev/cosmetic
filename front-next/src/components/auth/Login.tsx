@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 interface Idata {
   id: "string";
@@ -14,7 +16,7 @@ interface IProps {
 
 function Login({}: IProps) {
   const [data, setData] = useState<Idata | any>({});
-
+  const router = useRouter();
   const onChange = async (e: any) => {
     setData({
       ...data,
@@ -28,7 +30,12 @@ function Login({}: IProps) {
       password: data.password,
       redirect: false,
     });
-    console.log(response);
+    if (response?.error) {
+      toast.error(response?.error);
+    } else {
+      toast.success("Login success");
+      router.push("/");
+    }
   };
 
   return (

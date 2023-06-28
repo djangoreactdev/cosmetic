@@ -54,26 +54,26 @@ export const authOptions: AuthOptions = {
           variables: param,
         });
 
-        const user = res.data;
+        const data = res.data;
 
         // If no error and we have user data, return it
-        if (user !== undefined) {
-          const decoded: { exp: number; username: string } = jwtDecode(
-            user.tokenAuth.token
-          );
-          console.log(decoded);
+        if (data !== undefined) {
+          const decoded: { exp: number; email: string; username: string | "" } =
+            jwtDecode(data.tokenAuth.token);
+
           return {
-            ...user,
-            isNewUser: false,
+            ...data,
+            token: data.tokenAuth.token,
             tokenExpiresIn: decoded.exp,
+            email: decoded.email,
             username: decoded.username,
           } as Awaitable<User>;
         }
 
-        if (user?.errors) {
+        if (data?.errors) {
           const errorMessage =
-            user.errors[Object.keys(user.errors)[0]][0].message;
-          throw new Error(`${Object.keys(user.errors)[0]}: ${errorMessage}`);
+            data.errors[Object.keys(data.errors)[0]][0].message;
+          throw new Error(`${Object.keys(data.errors)[0]}: ${errorMessage}`);
         }
 
         // Return null if user data could not be retrieved
@@ -107,9 +107,10 @@ export const authOptions: AuthOptions = {
         password: {
           label: "Password",
           type: "password",
-          name: "password1",
+          name: "password",
         },
       },
+
       authorize: async (credentials, req) => {
         const param: AccountInput = {
           username: credentials?.username || "",
@@ -124,28 +125,25 @@ export const authOptions: AuthOptions = {
           variables: param,
         });
 
-        const user = res.data?.createAccount;
-
-        console.log(user);
-
-        // If no error and we have user data, return it
-        if (user?.success) {
-          const decoded: { exp: number; username: string } = jwtDecode(
-            user.token!
-          );
+        const data = res.data.createAccount.response;
+        console.log(data);
+        if (data.status === "success") {
+          const decoded: { email: string; exp: number; username: string | "" } =
+            jwtDecode(data.token);
 
           return {
-            ...user,
-            isNewUser: true,
+            ...data,
+            token: data.token,
             tokenExpiresIn: decoded.exp,
             username: decoded.username,
+            email: decoded.email,
           } as Awaitable<User>;
         }
 
-        if (user?.errors) {
-          const errorMessage =
-            user.errors[Object.keys(user.errors)[0]][0].message;
-          throw new Error(`${Object.keys(user.errors)[0]}: ${errorMessage}`);
+        if (data.status === "error") {
+          console.error(data.message);
+          const errorMessage = data.error(data.message);
+          throw new Error(`${Object.keys(data.message)}: ${errorMessage}`);
         }
         // Return null if user data could not be retrieved
         return null;
@@ -157,10 +155,9 @@ export const authOptions: AuthOptions = {
       if (user) {
         return {
           accessToken: user.token || "",
-          refreshToken: user.refreshToken || "",
           username: user.username || "",
+          email: user.email || "",
           tokenExpiresIn: user.tokenExpiresIn,
-          isNewUser: user.isNewUser,
         } as Awaitable<JWT>;
       } else if (Date.now() / 1000 < token.tokenExpiresIn) {
         return token;
@@ -173,12 +170,12 @@ export const authOptions: AuthOptions = {
             },
           });
 
-          Client.mutate({
-            mutation: RevokeTokenDocument,
-            variables: {
-              refreshToken: token.refreshToken,
-            },
-          });
+          // Client.mutate({
+          //   mutation: RevokeTokenDocument,
+          //   variables: {
+          //     refreshToken: token.refreshToken,
+          //   },
+          // });
 
           const tokens = res.data?.refreshToken;
 
@@ -205,7 +202,7 @@ export const authOptions: AuthOptions = {
     session: async ({ session, token }) => {
       session.token = token.accessToken;
       session.username = token.username;
-      session.isNewUser = token.isNewUser;
+      session.email = token.email;
       session.expires = `${token.tokenExpiresIn}`;
       return session;
     },

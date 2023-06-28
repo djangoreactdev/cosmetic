@@ -49,13 +49,15 @@ def get_from_redis(id, mode):
 
 def send_register_email(id, email, username, first_name, last_name):
     token_delete_to_redis(id, "register")
+    token = token_add_to_redis(id, "register")
     ctxt = {
         "email": email,
         "first_name": first_name,
         "last_name": last_name,
-        "token": token_add_to_redis(id, "register"),
-        "btn_name": "Verify your email . Click Me !",
+        "url_verify": f"{settings.CORS_ALLOWED_ORIGINS[0]}/account/email-verify/?token={token}&?email={email}",
+        "btn_name": "Verify your verify . Click Me !",
     }
+    print(ctxt)
     send_multi_format_email("signup_email", ctxt, target_email=email)
 
 

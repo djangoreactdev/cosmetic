@@ -1,6 +1,30 @@
-import React from "react";
+import { Client } from "@/graphql/apollo";
+import { NavCategoriesDocument } from "@/graphql/generated";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 export default function index() {
+  const [categorys, setCategories] = useState<(typeof NavCategoriesDocument)[]>(
+    []
+  );
+  async function getCategories() {
+    const { data } = await Client.query({
+      query: NavCategoriesDocument,
+    });
+    setCategories(data.categories);
+  }
+
+  async function getProducts() {
+    const { data } = await Client.query({
+      query: NavCategoriesDocument,
+    });
+    setCategories(data.categories);
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   return (
     <>
       <div className="breadcrumb-section breadcrumb-bg-color--golden">
@@ -46,6 +70,67 @@ export default function index() {
                       <li>
                         <ul className="sidebar-menu-collapse">
                           <li className="sidebar-menu-collapse-list">
+                            <a className="accordion-title">
+                              Men <i className="ion-ios-arrow-right"></i>
+                            </a>
+
+                            <ul className="accordion-category-list">
+                              <li>
+                                <a href="#">Dresses</a>
+                              </li>
+                              <li>
+                                <a href="#">Jackets &amp; Coats</a>
+                              </li>
+                              <li>
+                                <a href="#">Sweaters</a>
+                              </li>
+                              <li>
+                                <a href="#">Jeans</a>
+                              </li>
+                              <li>
+                                <a href="#">Blouses &amp; Shirts</a>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      {categorys.map((category) =>
+                        category.children.length > 0 ? (
+                          <li key={category.id}>
+                            <ul className="sidebar-menu-collapse">
+                              <li
+                                className="sidebar-menu-collapse-list"
+                                key={`category` + category.id}
+                              >
+                                <Link
+                                  className="accordion-title"
+                                  href={`shop/` + category.slug}
+                                >
+                                  {category.name}
+                                  <i className="ion-ios-arrow-right"></i>
+                                </Link>
+
+                                <ul className="accordion-category-list">
+                                  {category.children.map((child, id) => (
+                                    <li key={`child` + id}>
+                                      <Link href={`shop/` + child.slug}>
+                                        {child.name}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </li>
+                            </ul>
+                          </li>
+                        ) : (
+                          <li key={category.id}>
+                            <a href="#">{category.name}</a>
+                          </li>
+                        )
+                      )}
+                      <li>
+                        <ul className="sidebar-menu-collapse">
+                          <li className="sidebar-menu-collapse-list">
                             <div className="accordion">
                               <a
                                 href="#"
@@ -81,24 +166,6 @@ export default function index() {
                       </li>
                       <li>
                         <a href="#">Football</a>
-                      </li>
-                      <li>
-                        <a href="#"> Men's</a>
-                      </li>
-                      <li>
-                        <a href="#"> Portable Audio</a>
-                      </li>
-                      <li>
-                        <a href="#"> Smart Watches</a>
-                      </li>
-                      <li>
-                        <a href="#">Tennis</a>
-                      </li>
-                      <li>
-                        <a href="#"> Uncategorized</a>
-                      </li>
-                      <li>
-                        <a href="#"> Video Games</a>
                       </li>
                       <li>
                         <a href="#">Women's</a>
@@ -256,7 +323,7 @@ export default function index() {
                         <ul className="tablist nav sort-tab-btn">
                           <li>
                             <a
-                              className="nav-link active"
+                              className="nav-link active py-3"
                               data-bs-toggle="tab"
                               href="#layout-3-grid"
                             >
@@ -268,7 +335,7 @@ export default function index() {
                           </li>
                           <li>
                             <a
-                              className="nav-link"
+                              className="nav-link py-3"
                               data-bs-toggle="tab"
                               href="#layout-list"
                             >
@@ -287,14 +354,12 @@ export default function index() {
 
                       <div className="sort-select-list d-flex align-items-center">
                         <label className="mr-2">Sort By:</label>
-                        <form action="#">
+                        <form action="#" className="border p-2 rounded-sm">
                           <fieldset>
                             <select name="speed" id="speed">
                               <option>Sort by average rating</option>
                               <option>Sort by popularity</option>
-                              <option selected="selected">
-                                Sort by newness
-                              </option>
+                              <option value="selected">Sort by newness</option>
                               <option>Sort by price: low to high</option>
                               <option>Sort by price: high to low</option>
                               <option>Product Name: Z</option>
@@ -469,807 +534,6 @@ export default function index() {
                                   </div>
                                   <div className="content-right">
                                     <span className="price">$95.00</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="400"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-5.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-7.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Condimentum posuere
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">$115.00</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="0"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-6.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-9.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Convallis quam sit
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      $75.00 - $85.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="200"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-1.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-2.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="tag">
-                                    <span>sale</span>
-                                  </div>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Aliquam lobortis
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      $75.00 - $85.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="400"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-3.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-4.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="tag">
-                                    <span>sale</span>
-                                  </div>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Condimentum posuere
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      <del>$89.00</del> $80.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="0"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-6.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-8.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="tag">
-                                    <span>sale</span>
-                                  </div>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Condimentum posuere
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      $75.00 - $85.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="200"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-12.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-3.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Condimentum posuere
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      $75.00 - $85.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="400"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-10.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-5.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Condimentum posuere
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">
-                                      $75.00 - $85.00
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="0"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-7.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-8.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Donec eu libero ac
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">$74</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="200"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-5.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-8.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Dolorum fuga eget
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">$90</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
-                              <div
-                                className="product-default-single-item product-color--golden"
-                                data-aos="fade-up"
-                                data-aos-delay="400"
-                              >
-                                <div className="image-box">
-                                  <a
-                                    href="product-details-default.html"
-                                    className="image-link"
-                                  >
-                                    <img
-                                      src="assets/images/product/default/home-1/default-10.jpg"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="assets/images/product/default/home-1/default-6.jpg"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div className="action-link">
-                                    <div className="action-link-left">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalAddcart"
-                                      >
-                                        Add to Cart
-                                      </a>
-                                    </div>
-                                    <div className="action-link-right">
-                                      <a
-                                        href="#"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalQuickview"
-                                      >
-                                        <i className="icon-magnifier"></i>
-                                      </a>
-                                      <a href="wishlist.html">
-                                        <i className="icon-heart"></i>
-                                      </a>
-                                      <a href="compare.html">
-                                        <i className="icon-shuffle"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="content">
-                                  <div className="content-left">
-                                    <h6 className="title">
-                                      <a href="product-details-default.html">
-                                        Duis pulvinar obortis
-                                      </a>
-                                    </h6>
-                                    <ul className="review-star">
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="fill">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                      <li className="empty">
-                                        <i className="ion-android-star"></i>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="content-right">
-                                    <span className="price">$86.00</span>
                                   </div>
                                 </div>
                               </div>
@@ -1449,254 +713,85 @@ export default function index() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-12">
-                              <div className="product-list-single product-color--golden">
-                                <a
-                                  href="product-details-default.html"
-                                  className="product-list-img-link"
-                                >
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-5.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-6.jpg"
-                                    alt=""
-                                  />
-                                </a>
-                                <div className="product-list-content">
-                                  <h5 className="product-list-link">
-                                    <a href="product-details-default.html">
-                                      ALIQUAM LOBORTIS
-                                    </a>
-                                  </h5>
-                                  <ul className="review-star">
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="empty">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                  </ul>
-                                  <span className="product-list-price">
-                                    {" "}
-                                    $25.12
-                                  </span>
-                                  <p>
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. Nobis ad, iure incidunt.
-                                    Ab consequatur temporibus non eveniet
-                                    inventore doloremque necessitatibus sed,
-                                    ducimus quisquam, ad asperiores
-                                  </p>
-                                  <div className="product-action-icon-link-list">
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalAddcart"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      Add to cart
-                                    </a>
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalQuickview"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-magnifier"></i>
-                                    </a>
-                                    <a
-                                      href="wishlist.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-heart"></i>
-                                    </a>
-                                    <a
-                                      href="compare.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-shuffle"></i>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12">
-                              <div className="product-list-single product-color--golden">
-                                <a
-                                  href="product-details-default.html"
-                                  className="product-list-img-link"
-                                >
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-7.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-8.jpg"
-                                    alt=""
-                                  />
-                                </a>
-                                <div className="product-list-content">
-                                  <h5 className="product-list-link">
-                                    <a href="product-details-default.html">
-                                      CONVALLIS QUAM SIT
-                                    </a>
-                                  </h5>
-                                  <ul className="review-star">
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="empty">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                  </ul>
-                                  <span className="product-list-price">
-                                    $75.00 - $85.00
-                                  </span>
-                                  <p>
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. Nobis ad, iure incidunt.
-                                    Ab consequatur temporibus non eveniet
-                                    inventore doloremque necessitatibus sed,
-                                    ducimus quisquam, ad asperiores
-                                  </p>
-                                  <div className="product-action-icon-link-list">
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalAddcart"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      Add to cart
-                                    </a>
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalQuickview"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-magnifier"></i>
-                                    </a>
-                                    <a
-                                      href="wishlist.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-heart"></i>
-                                    </a>
-                                    <a
-                                      href="compare.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-shuffle"></i>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12">
-                              <div className="product-list-single product-color--golden">
-                                <a
-                                  href="product-details-default.html"
-                                  className="product-list-img-link"
-                                >
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-9.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="img-fluid"
-                                    src="assets/images/product/default/home-1/default-10.jpg"
-                                    alt=""
-                                  />
-                                </a>
-                                <div className="product-list-content">
-                                  <h5 className="product-list-link">
-                                    <a href="product-details-default.html">
-                                      DONEC EU LIBERO AC
-                                    </a>
-                                  </h5>
-                                  <ul className="review-star">
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="fill">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                    <li className="empty">
-                                      <i className="ion-android-star"></i>
-                                    </li>
-                                  </ul>
-                                  <span className="product-list-price">
-                                    <del>$25.12</del>
-                                    $20.00
-                                  </span>
-                                  <p>
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. Nobis ad, iure incidunt.
-                                    Ab consequatur temporibus non eveniet
-                                    inventore doloremque necessitatibus sed,
-                                    ducimus quisquam, ad asperiores
-                                  </p>
-                                  <div className="product-action-icon-link-list">
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalAddcart"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      Add to cart
-                                    </a>
-                                    <a
-                                      href="#"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#modalQuickview"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-magnifier"></i>
-                                    </a>
-                                    <a
-                                      href="wishlist.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-heart"></i>
-                                    </a>
-                                    <a
-                                      href="compare.html"
-                                      className="btn btn-lg btn-black-default-hover"
-                                    >
-                                      <i className="icon-shuffle"></i>
-                                    </a>
-                                  </div>
+                            <div className="product-list-single product-color--golden">
+                              <a
+                                href="product-details-default.html"
+                                className="product-list-img-link"
+                              >
+                                <img
+                                  className="img-fluid"
+                                  src="assets/images/product/default/home-1/default-9.jpg"
+                                  alt=""
+                                />
+                                <img
+                                  className="img-fluid"
+                                  src="assets/images/product/default/home-1/default-10.jpg"
+                                  alt=""
+                                />
+                              </a>
+                              <div className="product-list-content">
+                                <h5 className="product-list-link">
+                                  <a href="product-details-default.html">
+                                    DONEC EU LIBERO AC
+                                  </a>
+                                </h5>
+                                <ul className="review-star">
+                                  <li className="fill">
+                                    <i className="ion-android-star"></i>
+                                  </li>
+                                  <li className="fill">
+                                    <i className="ion-android-star"></i>
+                                  </li>
+                                  <li className="fill">
+                                    <i className="ion-android-star"></i>
+                                  </li>
+                                  <li className="fill">
+                                    <i className="ion-android-star"></i>
+                                  </li>
+                                  <li className="empty">
+                                    <i className="ion-android-star"></i>
+                                  </li>
+                                </ul>
+                                <span className="product-list-price">
+                                  <del>$25.12</del>
+                                  $20.00
+                                </span>
+                                <p>
+                                  Lorem ipsum dolor sit amet, consectetur
+                                  adipisicing elit. Nobis ad, iure incidunt. Ab
+                                  consequatur temporibus non eveniet inventore
+                                  doloremque necessitatibus sed, ducimus
+                                  quisquam, ad asperiores
+                                </p>
+                                <div className="product-action-icon-link-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalAddcart"
+                                    className="btn btn-lg btn-black-default-hover"
+                                  >
+                                    Add to cart
+                                  </a>
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalQuickview"
+                                    className="btn btn-lg btn-black-default-hover"
+                                  >
+                                    <i className="icon-magnifier"></i>
+                                  </a>
+                                  <a
+                                    href="wishlist.html"
+                                    className="btn btn-lg btn-black-default-hover"
+                                  >
+                                    <i className="icon-heart"></i>
+                                  </a>
+                                  <a
+                                    href="compare.html"
+                                    className="btn btn-lg btn-black-default-hover"
+                                  >
+                                    <i className="icon-shuffle"></i>
+                                  </a>
                                 </div>
                               </div>
                             </div>
@@ -1714,6 +809,11 @@ export default function index() {
                 data-aos-delay="0"
               >
                 <ul>
+                  <li>
+                    <a href="#">
+                      <i className="fas fa-step-forward"></i>
+                    </a>
+                  </li>
                   <li>
                     <a className="active" href="#">
                       1
