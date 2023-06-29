@@ -7,15 +7,16 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import { getSession, signOut } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message }) => {
-      console.log(message);
+      toast.error(message);
     });
   }
   if (networkError) {
-    console.log(networkError.message);
+    toast.error(networkError.message);
   }
 });
 
@@ -27,7 +28,7 @@ const authMiddleware = setContext(async (_, { headers }) => {
   } catch (error) {
     signOut();
   }
-
+  console.log(token);
   return {
     headers: {
       ...headers,

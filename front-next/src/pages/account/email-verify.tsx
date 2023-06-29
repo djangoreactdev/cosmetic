@@ -57,10 +57,10 @@ export default function useEmailverify() {
                   <nav aria-label="breadcrumb">
                     <ul>
                       <li>
-                        <Link href="index.html">Home</Link>
+                        <Link href="/">Home</Link>
                       </li>
                       <li>
-                        <Link href="shop-grid-sidebar-left.html">Shop</Link>
+                        <Link href="shop">Shop</Link>
                       </li>
                       <li className="active" aria-current="page">
                         Empty Cart

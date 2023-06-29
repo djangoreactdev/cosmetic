@@ -152,6 +152,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
+      console.log(user, token);
       if (user) {
         return {
           accessToken: user.token || "",
@@ -176,7 +177,7 @@ export const authOptions: AuthOptions = {
           //     refreshToken: token.refreshToken,
           //   },
           // });
-
+          console.log(res);
           const tokens = res.data?.refreshToken;
 
           if (!tokens?.success) throw tokens;
@@ -207,6 +208,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

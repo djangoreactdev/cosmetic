@@ -368,11 +368,11 @@ ARTICLES_TIMEOUT = 1000
 EXPIRED_TIME = 900
 
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:3000"])
-# from datetime import timedelta
+from datetime import timedelta
 
-# GRAPHQL_JWT = {
-#     "JWT_VERIFY_EXPIRATION": True,
-#     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-#     "JWT_EXPIRATION_DELTA": timedelta(minutes=5),
-#     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
-# }
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    # "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=60),
+    # "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+}
