@@ -63,12 +63,14 @@ def send_register_email(id, email, username, first_name, last_name):
 
 def send_reset_password_email(id, email, username, first_name, last_name):
     token_delete_to_redis(id, "reset_password")
+    token = token_add_to_redis(id, "reset_password")
     ctxt = {
         "email": email,
         "username": username,
         "first_name": first_name,
         "last_name": last_name,
-        "token": token_add_to_redis(id, "reset_password"),
+        "url_verify": f"{settings.CORS_ALLOWED_ORIGINS[0]}/verify-password/?token={token}&?email={email}",
+        # "token": token_add_to_redis(id, "reset_password"),
         "btn_name": "Reset password . Click Me !",
     }
     send_multi_format_email("signup_email", ctxt, target_email=email)
@@ -76,12 +78,14 @@ def send_reset_password_email(id, email, username, first_name, last_name):
 
 def send_change_email(id, email, username, first_name, last_name):
     token_delete_to_redis(id, "change_email")
+    token = token_add_to_redis(id, "change_email")
     ctxt = {
         "email": email,
         "username": username,
         "first_name": first_name,
         "last_name": last_name,
-        "token": token_add_to_redis(id, "change_email"),
+        "url_verify": f"{settings.CORS_ALLOWED_ORIGINS[0]}/account/change-email-verify/?token={token}&?email={email}",
+        # "token": token_add_to_redis(id, "change_email"),
         "btn_name": "Change email . Click Me !",
     }
     send_multi_format_email("signup_email", ctxt, target_email=email)

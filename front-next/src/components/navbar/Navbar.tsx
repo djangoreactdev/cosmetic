@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Client } from "@/graphql/apollo";
-import { useMutation, useLazyQuery } from "@apollo/client";
+
 import { NavCategoriesDocument } from "@/graphql/generated";
 
 export function Navbar() {

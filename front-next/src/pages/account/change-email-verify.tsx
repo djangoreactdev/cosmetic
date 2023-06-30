@@ -1,5 +1,5 @@
 import { Client } from "@/graphql/apollo";
-import { ActivateAccountDocument } from "@/graphql/generated";
+import { VerifyEmailDocument } from "@/graphql/generated";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -19,18 +19,18 @@ export default function useEmailverify() {
       console.log(token, email);
       const verifyEmail = async () => {
         const res = await Client.mutate({
-          mutation: ActivateAccountDocument,
+          mutation: VerifyEmailDocument,
           variables: {
             email: email,
             token: token,
           },
         });
         console.log(res);
-        const data = res.data.activateAccount.response;
+        const data = res.data.verifyEmail.response;
 
         if (data.status === "success") {
           toast.success(data.message);
-          router.push("/");
+          router.push("/login");
           setTitle("Your email is verify");
         } else {
           setTitle("Your email is not verify");
